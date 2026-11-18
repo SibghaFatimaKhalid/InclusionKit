@@ -44,9 +44,9 @@
    gives maximum contrast against any background color (luminance-independent).
    -------------------------------------------------------------------------- */
 *:focus-visible {
-  outline: 3px solid #facc15 !important;
-  outline-offset: 3px !important;
-  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.85) !important;
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #0284c7) !important;
+  outline-offset: var(--focus-ring-offset, 3px) !important;
+  box-shadow: 0 0 0 5px var(--haptic-pulse-color, rgba(2, 132, 199, 0.45)) !important;
   border-radius: 4px !important;
   transition: outline-offset 0.1s ease !important;
 }

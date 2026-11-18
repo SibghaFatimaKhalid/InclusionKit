@@ -4,7 +4,7 @@
  * aur internet na hone par bhi basic files chal sakein.
  */
 
-const CACHE_NAME = 'accessimart-v12';
+const CACHE_NAME = 'accessimart-v13';
 
 // Yeh saari local files install ke waqt cache hoti hain
 const PRE_CACHE_ASSETS = [
