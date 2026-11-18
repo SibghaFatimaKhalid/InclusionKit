@@ -16,7 +16,6 @@ window.InclusionKit = window.InclusionKit || {};
   const State = window.InclusionKit.State;
   // Lazy getters — these modules are initialized in their own DOMContentLoaded handlers
   const Haptics = () => window.InclusionKit.VisualHapticEngine;
-  const Inspector = () => window.InclusionKit.WCAGInspector;
 
   class AppController {
     constructor() {
@@ -34,7 +33,6 @@ window.InclusionKit = window.InclusionKit || {};
         this.bindVisionControls();
         this.bindTypographyControls();
         this.bindHapticControls();
-        this.bindInspectorToggle();
         this.bindKeyboardShortcuts();
         this.bindResetButton();
         this.updateActiveBadgeCounter();
@@ -278,19 +276,6 @@ window.InclusionKit = window.InclusionKit || {};
     }
 
     /**
-     * WCAG 2.1 Live Auditor Toggle
-     */
-    bindInspectorToggle() {
-      const inspectorBtns = document.querySelectorAll('.btn-trigger-inspector');
-      inspectorBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const current = State.get('inspectorActive');
-          State.set('inspectorActive', !current);
-        });
-      });
-    }
-
-    /**
      * Global Keyboard Shortcuts
      */
     bindKeyboardShortcuts() {
@@ -299,13 +284,6 @@ window.InclusionKit = window.InclusionKit || {};
         if (e.altKey && e.key.toLowerCase() === 'a') {
           e.preventDefault();
           if (this.dockToggleBtn) this.dockToggleBtn.click();
-        }
-
-        // Alt + I: Toggle WCAG Inspector
-        if (e.altKey && e.key.toLowerCase() === 'i') {
-          e.preventDefault();
-          const current = State.get('inspectorActive');
-          State.set('inspectorActive', !current);
         }
 
         // Alt + R: Reset All

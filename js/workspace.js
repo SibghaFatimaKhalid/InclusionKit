@@ -630,9 +630,14 @@ window.InclusionKit = window.InclusionKit || {};
           const email = document.getElementById('auth-email').value.trim();
           const password = document.getElementById('auth-password').value;
           const name = document.getElementById('auth-name').value.trim();
+          if (!email || !password || password.length < 6) {
+            this.showToast('Please enter a valid email and password (min 6 characters).', true);
+            return;
+          }
           try {
             await DB.signUp(email, password, name);
-            this.showToast('Account created! Check email if confirmation is enabled.');
+            modal.classList.add('hidden');
+            this.showToast('Account created & signed in!');
           } catch (err) {
             this.showToast(err.message, true);
           }
