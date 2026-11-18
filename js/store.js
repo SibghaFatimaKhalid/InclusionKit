@@ -121,6 +121,9 @@ window.InclusionKit = window.InclusionKit || {};
     }
 
     async syncRole() {
+      if (DB && !DB.user) {
+        await DB.getSession();
+      }
       this.userRole = DB ? await DB.getUserRole() : 'guest';
       const guestBanner = document.getElementById('store-guest-banner');
       const adminPanel = document.getElementById('admin-store-panel');
