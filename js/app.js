@@ -292,11 +292,14 @@ window.InclusionKit = window.InclusionKit || {};
           State.resetAll();
         }
 
-        // Escape: Dismiss any active Hover-to-Read mode
+        // Escape: Dismiss Hover-to-Read and any open modal/drawer
         if (e.key === 'Escape') {
           if (window.InclusionKit.VoiceEngine && window.InclusionKit.VoiceEngine.isHoverReadMode) {
             window.InclusionKit.VoiceEngine.disableHoverRead();
           }
+          ['help-modal', 'account-modal', 'product-detail-modal', 'cart-drawer', 'checkout-modal'].forEach(id => {
+            document.getElementById(id)?.classList.add('hidden');
+          });
         }
 
         // ====================================================================

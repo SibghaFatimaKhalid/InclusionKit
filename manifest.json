@@ -1,7 +1,7 @@
 {
-  "name": "InclusionKit — Personalized Accessibility Management System",
-  "short_name": "InclusionKit",
-  "description": "Personalized Accessibility Management System & Inclusive Online Store.",
+  "name": "AccessiMart — Inclusive Adaptive Tech Store",
+  "short_name": "AccessiMart",
+  "description": "Accessible Online Store powered by adaptive vision, typography, voice, and tactile haptics.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

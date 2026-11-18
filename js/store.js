@@ -655,7 +655,11 @@ window.InclusionKit = window.InclusionKit || {};
 
     async renderOrders() {
       const container = document.getElementById('store-orders-list');
-      if (!container || !DB || !DB.user) return;
+      if (!container || !DB) return;
+      if (!DB.user) {
+        container.innerHTML = '';
+        return;
+      }
       const orders = await DB.getOrders();
       if (!orders.length) {
         container.innerHTML = `<p class="text-xs text-slate-500 italic">No orders placed yet.</p>`;

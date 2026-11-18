@@ -59,25 +59,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function executeActionKey(actionKey) {
     switch (actionKey) {
+      case 'nav_store':
       case 'nav_dashboard':
-        window.InclusionKit?.Workspace?.switchView('dashboard');
-        speak('Dashboard opened');
+        window.InclusionKit?.Workspace?.switchView('store');
+        speak('Store opened');
         break;
+      case 'nav_settings':
       case 'nav_reading':
-        window.InclusionKit?.Workspace?.switchView('reading');
-        speak('Reading studio opened');
-        break;
       case 'nav_voice':
-        window.InclusionKit?.Workspace?.switchView('voice');
-        speak('Voice macros opened');
-        break;
-      case 'nav_analytics':
-        window.InclusionKit?.Workspace?.switchView('analytics');
-        speak('Analytics opened');
-        break;
       case 'nav_reports':
-        window.InclusionKit?.Workspace?.switchView('reports');
-        speak('Issue reporter opened');
+        window.InclusionKit?.Workspace?.switchView('settings');
+        speak('Settings opened');
+        break;
+      case 'nav_admin':
+      case 'nav_analytics':
+        window.InclusionKit?.Workspace?.switchView('admin');
+        speak('Admin panel opened');
         break;
       case 'toggle_high_contrast':
         State?.set('contrastMode', State.get('contrastMode') === 'high' ? 'normal' : 'high');
@@ -596,36 +593,104 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       patterns: ['open help', 'help', 'shortcuts', 'commands', 'what can i say'],
       action() {
-        document.getElementById('btn-open-help')?.click();
+        document.getElementById('help-modal')?.classList.remove('hidden');
         speak('Accessibility help and shortcuts opened');
       },
     },
     {
-      patterns: ['open reading', 'reading studio', 'text to speech studio', 'tts studio', 'open notes'],
+      patterns: ['close help', 'hide help'],
       action() {
-        window.InclusionKit?.Workspace?.switchView('reading');
-        speak('Reading and text to speech studio opened');
+        document.getElementById('help-modal')?.classList.add('hidden');
+        speak('Help closed');
       },
     },
     {
-      patterns: ['open voice', 'voice macros', 'custom commands', 'voice commands'],
+      patterns: ['close cart', 'hide cart'],
       action() {
-        window.InclusionKit?.Workspace?.switchView('voice');
-        speak('Voice command macros manager opened');
+        document.getElementById('cart-drawer')?.classList.add('hidden');
+        speak('Shopping cart closed');
       },
     },
     {
-      patterns: ['open analytics', 'show analytics', 'usage stats', 'domain presets'],
+      patterns: ['checkout', 'proceed to checkout', 'buy now', 'place order'],
       action() {
-        window.InclusionKit?.Workspace?.switchView('analytics');
-        speak('Usability analytics and domain presets opened');
+        document.getElementById('btn-proceed-checkout')?.click();
+        speak('Opening accessible checkout');
       },
     },
     {
-      patterns: ['open reports', 'report issue', 'bug report', 'feedback'],
+      patterns: ['sign in', 'login', 'open account', 'my account'],
       action() {
-        window.InclusionKit?.Workspace?.switchView('reports');
-        speak('Accessibility issue reporter opened');
+        document.getElementById('btn-open-account')?.click();
+        speak('Account sign in opened');
+      },
+    },
+    {
+      patterns: ['show all products', 'all products', 'all categories'],
+      action() {
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="All"]')?.click();
+        speak('Showing all store products');
+      },
+    },
+    {
+      patterns: ['show audio', 'audio category', 'headphones'],
+      action() {
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="Audio"]')?.click();
+        speak('Showing audio products');
+      },
+    },
+    {
+      patterns: ['show keyboards', 'input devices', 'show input devices'],
+      action() {
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="Input Devices"]')?.click();
+        speak('Showing input devices');
+      },
+    },
+    {
+      patterns: ['show displays', 'show monitors', 'displays'],
+      action() {
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="Displays"]')?.click();
+        speak('Showing displays');
+      },
+    },
+    {
+      patterns: ['show wearables', 'show watches', 'wearables'],
+      action() {
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="Wearables"]')?.click();
+        speak('Showing wearables');
+      },
+    },
+    {
+      patterns: ['low vision mode', 'low vision preset'],
+      action() {
+        document.querySelector('[data-apply-preset="low-vision"]')?.click();
+        speak('Low vision profile enabled');
+      },
+    },
+    {
+      patterns: ['dyslexia mode', 'dyslexia preset', 'dyslexia support'],
+      action() {
+        document.querySelector('[data-apply-preset="dyslexia"]')?.click();
+        speak('Dyslexia support profile enabled');
+      },
+    },
+    {
+      patterns: ['color blind mode', 'color blindness preset'],
+      action() {
+        document.querySelector('[data-apply-preset="color-blind"]')?.click();
+        speak('Color blindness profile enabled');
+      },
+    },
+    {
+      patterns: ['motor mode', 'switch access mode', 'motor preset'],
+      action() {
+        document.querySelector('[data-apply-preset="motor"]')?.click();
+        speak('Motor and switch access profile enabled');
       },
     },
 
@@ -855,10 +920,10 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     },
     {
-      patterns: ['help', 'commands', 'what can i say', 'voice guide'],
+      patterns: ['voice guide', 'voice help'],
       action() {
-        window.InclusionKit?.Workspace?.switchView('voice');
-        speak('Opened voice command macros and reference');
+        document.getElementById('help-modal')?.classList.remove('hidden');
+        speak('Opened accessibility help and voice command reference');
       },
     },
     {
@@ -1110,9 +1175,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       return true;
     }
-    if (has('help', 'command', 'viva', 'guide', 'what can i say')) {
-      document.querySelector('.btn-open-viva')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-      speak('Opening accessibility guide and full voice command reference');
+    if (has('help', 'command', 'shortcut', 'guide', 'what can i say')) {
+      document.getElementById('help-modal')?.classList.remove('hidden');
+      speak('Opening accessibility help and voice command reference');
       return true;
     }
     if (
