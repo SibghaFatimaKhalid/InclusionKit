@@ -34,7 +34,11 @@ window.InclusionKit = window.InclusionKit || {};
     focusStyle: 'vibrant-blue', // 'vibrant-blue' | 'high-contrast-yellow' | 'cyber-magenta' | 'pure-white'
     enhancedFocus: true,        // Pulsing focus glow
     
-    // Educational Viva Mode
+    // Reading & TTS
+    ttsRate: 1.0,               // 0.75 | 1.0 | 1.25 | 1.5 | 1.75
+    activePreset: 'custom',     // 'custom' | 'low-vision' | 'dyslexia' | 'color-blind' | 'motor'
+
+    // Accessibility Auditor
     inspectorActive: false      // WCAG Inspector tooltips active
   };
 
@@ -162,8 +166,21 @@ window.InclusionKit = window.InclusionKit || {};
     }
 
     /**
+     * Bulk-loads a settings object (e.g., from a saved user profile or preset).
+     * @param {Object} settingsObj
+     */
+    loadSettings(settingsObj) {
+      if (!settingsObj || typeof settingsObj !== 'object') return;
+      this.state = { ...DEFAULT_STATE, ...settingsObj };
+      this.saveToStorage();
+      Object.keys(DEFAULT_STATE).forEach(key => {
+        this.notify(key, this.state[key], null);
+      });
+      this.notify('*', null, null);
+    }
+
+    /**
      * Resets all accessibility preferences to factory defaults.
-     * Crucial for testing & viva demonstrations.
      */
     resetAll() {
       this.state = { ...DEFAULT_STATE };

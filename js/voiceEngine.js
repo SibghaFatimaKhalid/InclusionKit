@@ -50,6 +50,60 @@ document.addEventListener('DOMContentLoaded', () => {
   /** @type {HTMLElement|null} Currently highlighted element under mouse cursor. */
   let currentHoveredEl = null;
 
+  /** @type {Array<{id: string, phrase: string, action_key: string}>} User custom voice macros. */
+  let customVoiceCommands = [];
+
+  function setCustomCommands(list) {
+    customVoiceCommands = Array.isArray(list) ? list : [];
+  }
+
+  function executeActionKey(actionKey) {
+    switch (actionKey) {
+      case 'nav_dashboard':
+        window.InclusionKit?.Workspace?.switchView('dashboard');
+        speak('Dashboard opened');
+        break;
+      case 'nav_reading':
+        window.InclusionKit?.Workspace?.switchView('reading');
+        speak('Reading studio opened');
+        break;
+      case 'nav_voice':
+        window.InclusionKit?.Workspace?.switchView('voice');
+        speak('Voice macros opened');
+        break;
+      case 'nav_analytics':
+        window.InclusionKit?.Workspace?.switchView('analytics');
+        speak('Analytics opened');
+        break;
+      case 'nav_reports':
+        window.InclusionKit?.Workspace?.switchView('reports');
+        speak('Issue reporter opened');
+        break;
+      case 'toggle_high_contrast':
+        State?.set('contrastMode', State.get('contrastMode') === 'high' ? 'normal' : 'high');
+        speak('Toggled high contrast mode');
+        break;
+      case 'toggle_dyslexic_font':
+        State?.set('fontFamily', State.get('fontFamily') === 'dyslexic' ? 'default' : 'dyslexic');
+        speak('Toggled dyslexia friendly font');
+        break;
+      case 'toggle_reading_ruler':
+        State?.set('readingRuler', !State.get('readingRuler'));
+        speak('Toggled reading guide ruler');
+        break;
+      case 'increase_text':
+        State?.set('fontScale', Math.min(2.0, (State.get('fontScale') || 1.0) + 0.25));
+        speak('Increased text size');
+        break;
+      case 'reset_all':
+        State?.resetAll();
+        speak('All settings reset to default');
+        break;
+      default:
+        speak('Custom macro executed');
+    }
+  }
+
   /** @type {boolean} Whether the browser supports SpeechRecognition. */
   const isSupported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
@@ -517,191 +571,40 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     },
 
-    // ── 4. Section & Tab Navigation ─────────────────────────────────────────
+    // ── 4. Workspace View Navigation ────────────────────────────────────────
     {
-      patterns: ['go to product', 'show product', 'view product', 'product showcase'],
+      patterns: ['open dashboard', 'go to dashboard', 'show dashboard', 'profiles', 'home'],
       action() {
-        document.querySelector('main')?.scrollIntoView({ behavior: 'smooth' });
-        speak('Viewing AuraPulse Max headphone showcase');
+        window.InclusionKit?.Workspace?.switchView('dashboard');
+        speak('Dashboard and accessibility profiles opened');
       },
     },
     {
-      patterns: ['go to specs', 'show specs', 'specifications', 'specs tab'],
+      patterns: ['open reading', 'reading studio', 'text to speech studio', 'tts studio', 'open notes'],
       action() {
-        const tab = document.getElementById('tab-specs');
-        tab?.click();
-        tab?.scrollIntoView({ behavior: 'smooth' });
-        speak('Technical specifications displayed');
+        window.InclusionKit?.Workspace?.switchView('reading');
+        speak('Reading and text to speech studio opened');
       },
     },
     {
-      patterns: ['go to accessibility', 'show accessibility', 'accessibility tab', 'inclusive features'],
+      patterns: ['open voice', 'voice macros', 'custom commands', 'voice commands'],
       action() {
-        const tab = document.getElementById('tab-accessibility');
-        tab?.click();
-        tab?.scrollIntoView({ behavior: 'smooth' });
-        speak('Accessibility features panel displayed');
+        window.InclusionKit?.Workspace?.switchView('voice');
+        speak('Voice command macros manager opened');
       },
     },
     {
-      patterns: ['go to reviews', 'show reviews', 'customer reviews', 'reviews tab'],
+      patterns: ['open analytics', 'show analytics', 'usage stats', 'domain presets'],
       action() {
-        const tab = document.getElementById('tab-reviews');
-        tab?.click();
-        tab?.scrollIntoView({ behavior: 'smooth' });
-        speak('Customer reviews displayed');
-      },
-    },
-
-    // ── 5. Color Swatch Finishes ───────────────────────────────────────────
-    {
-      patterns: ['select obsidian', 'obsidian', 'select black', 'black color', 'circle color', 'circle shape'],
-      action() {
-        document.querySelector('[data-product-variant="obsidian"]')?.click();
-        speak('Cosmic Obsidian black finish selected');
+        window.InclusionKit?.Workspace?.switchView('analytics');
+        speak('Usability analytics and domain presets opened');
       },
     },
     {
-      patterns: ['select chalk', 'chalk', 'select white', 'white color', 'square color', 'square shape'],
+      patterns: ['open reports', 'report issue', 'bug report', 'feedback'],
       action() {
-        document.querySelector('[data-product-variant="chalk"]')?.click();
-        speak('Alpine Chalk white finish selected');
-      },
-    },
-    {
-      patterns: ['select coral', 'coral', 'select orange', 'orange color', 'triangle color', 'triangle shape'],
-      action() {
-        document.querySelector('[data-product-variant="coral"]')?.click();
-        speak('Coral Sunrise finish selected');
-      },
-    },
-    {
-      patterns: ['select azure', 'azure', 'select blue', 'blue color', 'diamond color', 'diamond shape'],
-      action() {
-        document.querySelector('[data-product-variant="azure"]')?.click();
-        speak('Pacific Azure blue finish selected');
-      },
-    },
-
-    // ── 6. Quantity Steppers & Direct Values ───────────────────────────────
-    {
-      patterns: ['increase quantity', 'add quantity', 'more quantity', 'more items', 'plus one', 'quantity plus', 'add more'],
-      action() {
-        document.getElementById('btn-qty-increase')?.click();
-        const q = document.getElementById('product-qty-input')?.value || '1';
-        speak(`Quantity increased to ${q}`);
-      },
-    },
-    {
-      patterns: ['decrease quantity', 'reduce quantity', 'less quantity', 'reduce items', 'minus one', 'quantity minus', 'less items'],
-      action() {
-        document.getElementById('btn-qty-decrease')?.click();
-        const q = document.getElementById('product-qty-input')?.value || '1';
-        speak(`Quantity decreased to ${q}`);
-      },
-    },
-    {
-      patterns: ['quantity 1', 'quantity one', 'set quantity to 1', 'set quantity to one'],
-      action() {
-        const inp = document.getElementById('product-qty-input');
-        if (inp) {
-          inp.value = '1';
-          inp.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        speak('Quantity set to 1');
-      },
-    },
-    {
-      patterns: ['quantity 2', 'quantity two', 'set quantity to 2', 'set quantity to two'],
-      action() {
-        const inp = document.getElementById('product-qty-input');
-        if (inp) {
-          inp.value = '2';
-          inp.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        speak('Quantity set to 2');
-      },
-    },
-    {
-      patterns: ['quantity 3', 'quantity three', 'set quantity to 3', 'set quantity to three'],
-      action() {
-        const inp = document.getElementById('product-qty-input');
-        if (inp) {
-          inp.value = '3';
-          inp.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        speak('Quantity set to 3');
-      },
-    },
-    {
-      patterns: ['quantity 4', 'quantity four', 'set quantity to 4', 'set quantity to four'],
-      action() {
-        const inp = document.getElementById('product-qty-input');
-        if (inp) {
-          inp.value = '4';
-          inp.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        speak('Quantity set to 4');
-      },
-    },
-    {
-      patterns: ['quantity 5', 'quantity five', 'set quantity to 5', 'set quantity to five', 'maximum quantity'],
-      action() {
-        const inp = document.getElementById('product-qty-input');
-        if (inp) {
-          inp.value = '5';
-          inp.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        speak('Quantity set to 5, which is the maximum limit');
-      },
-    },
-
-    // ── 7. Cart, Checkout & Purchasing ─────────────────────────────────────
-    {
-      patterns: ['add to cart', 'put in cart', 'buy headphone', 'add item', 'purchase'],
-      action() {
-        document.getElementById('btn-add-to-cart')?.click();
-        speak('Added AuraPulse Max to your shopping cart');
-      },
-    },
-    {
-      patterns: ['open cart', 'view cart', 'show cart', 'shopping cart', 'my cart'],
-      action() {
-        document.getElementById('header-cart-btn')?.click();
-        speak('Shopping cart opened');
-      },
-    },
-    {
-      patterns: ['close cart', 'hide cart'],
-      action() {
-        document.getElementById('btn-close-cart')?.click();
-        speak('Cart closed');
-      },
-    },
-    {
-      patterns: ['checkout', 'buy now', 'proceed to checkout', 'open checkout', 'pay now'],
-      action() {
-        document.getElementById('btn-buy-now')?.click();
-        speak('Opening accessible checkout dialog');
-      },
-    },
-    {
-      patterns: ['close checkout', 'cancel checkout'],
-      action() {
-        document.getElementById('btn-close-checkout')?.click();
-        speak('Checkout dialog closed');
-      },
-    },
-    {
-      patterns: ['what is the price', 'read price', 'how much', 'pricing', 'cost'],
-      action() {
-        speak('AuraPulse Max is on sale for 219 dollars, discounted from 299 dollars, saving you 80 dollars or 27 percent.');
-      },
-    },
-    {
-      patterns: ['what are the reviews', 'read reviews', 'rating', 'how many stars'],
-      action() {
-        speak('Rated 4.9 out of 5 stars based on 1,280 verified customer reviews.');
+        window.InclusionKit?.Workspace?.switchView('reports');
+        speak('Accessibility issue reporter opened');
       },
     },
 
@@ -931,10 +834,10 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     },
     {
-      patterns: ['help', 'commands', 'what can i say', 'viva', 'cheat sheet', 'examiner guide'],
+      patterns: ['help', 'commands', 'what can i say', 'voice guide'],
       action() {
-        document.querySelector('.btn-open-viva')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        speak('Opening accessibility guide and full voice command reference');
+        window.InclusionKit?.Workspace?.switchView('voice');
+        speak('Opened voice command macros and reference');
       },
     },
     {
@@ -1070,116 +973,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return true;
     }
 
-    // C. E-Commerce Cart & Checkout
-    if (has('cart', 'card', 'basket', 'bag')) {
-      if (has('add', 'ad', 'put', 'insert', 'buy')) {
-        document.getElementById('btn-add-to-cart')?.click();
-        speak('Added AuraPulse Max to your shopping cart');
+    // C. Custom User Voice Macros (loaded from DB)
+    if (Array.isArray(customVoiceCommands) && customVoiceCommands.length > 0) {
+      const matchedMacro = customVoiceCommands.find(m => lower.includes(m.phrase.toLowerCase()));
+      if (matchedMacro) {
+        executeActionKey(matchedMacro.action_key);
         return true;
       }
-      if (has('open', 'show', 'view', 'display', 'see')) {
-        document.getElementById('header-cart-btn')?.click();
-        speak('Shopping cart opened');
-        return true;
-      }
-      if (has('close', 'hide', 'dismiss')) {
-        document.getElementById('btn-close-cart')?.click();
-        speak('Cart closed');
-        return true;
-      }
-    }
-    if (has('check', 'checkout', 'pay', 'purchase', 'order', 'buy now')) {
-      if (has('close', 'cancel')) {
-        document.getElementById('btn-close-checkout')?.click();
-        speak('Checkout dialog closed');
-      } else {
-        document.getElementById('btn-buy-now')?.click();
-        speak('Opening accessible checkout dialog');
-      }
-      return true;
-    }
-
-    // D. Color Swatches (Non-Color Cues)
-    if (has('black', 'obsidian', 'dark', 'circle')) {
-      document.querySelector('[data-product-variant="obsidian"]')?.click();
-      speak('Cosmic Obsidian black finish selected');
-      return true;
-    }
-    if (has('white', 'chalk', 'chock', 'square')) {
-      document.querySelector('[data-product-variant="chalk"]')?.click();
-      speak('Alpine Chalk white finish selected');
-      return true;
-    }
-    if (has('orange', 'coral', 'corol', 'triangle', 'reddish')) {
-      document.querySelector('[data-product-variant="coral"]')?.click();
-      speak('Coral Sunrise finish selected');
-      return true;
-    }
-    if (has('blue', 'azure', 'azur', 'diamond', 'sky')) {
-      document.querySelector('[data-product-variant="azure"]')?.click();
-      speak('Pacific Azure blue finish selected');
-      return true;
-    }
-
-    // E. Quantity Controls & Stepper
-    if (has('quantity', 'quanty', 'qty', 'count', 'items', 'item')) {
-      if (has('more', 'increase', 'plus', 'add', 'up')) {
-        document.getElementById('btn-qty-increase')?.click();
-        const q = document.getElementById('product-qty-input')?.value || '1';
-        speak(`Quantity increased to ${q}`);
-        return true;
-      }
-      if (has('less', 'decrease', 'reduce', 'minus', 'down')) {
-        document.getElementById('btn-qty-decrease')?.click();
-        const q = document.getElementById('product-qty-input')?.value || '1';
-        speak(`Quantity decreased to ${q}`);
-        return true;
-      }
-      const numWords = ['one', 'two', 'three', 'four', 'five'];
-      for (let i = 1; i <= 5; i++) {
-        if (has(String(i), numWords[i - 1])) {
-          const inp = document.getElementById('product-qty-input');
-          if (inp) {
-            inp.value = String(i);
-            inp.dispatchEvent(new Event('change', { bubbles: true }));
-          }
-          speak(`Quantity set to ${i}`);
-          return true;
-        }
-      }
-    }
-
-    // F. Tabs (Specs, Reviews, Accessibility)
-    if (has('spec', 'specification', 'specs', 'feature', 'technical')) {
-      const tab = document.getElementById('tab-specs');
-      tab?.click();
-      tab?.scrollIntoView({ behavior: 'smooth' });
-      speak('Technical specifications displayed');
-      return true;
-    }
-    if (has('review', 'rating', 'star', 'feedback')) {
-      if (has('read', 'what', 'how', 'tell')) {
-        speak('Rated 4.9 out of 5 stars based on 1,280 verified customer reviews.');
-      } else {
-        const tab = document.getElementById('tab-reviews');
-        tab?.click();
-        tab?.scrollIntoView({ behavior: 'smooth' });
-        speak('Customer reviews displayed');
-      }
-      return true;
-    }
-    if (has('accessibility', 'inclusion', 'inclusive')) {
-      const tab = document.getElementById('tab-accessibility');
-      tab?.click();
-      tab?.scrollIntoView({ behavior: 'smooth' });
-      speak('Accessibility features panel displayed');
-      return true;
-    }
-
-    // G. Price Inquiry
-    if (has('price', 'cost', 'rate', 'dollar', 'how much')) {
-      speak('AuraPulse Max is on sale for 219 dollars, discounted from 299 dollars, saving you 80 dollars or 27 percent.');
-      return true;
     }
 
     // H. Contrast Modes
@@ -1616,6 +1416,8 @@ document.addEventListener('DOMContentLoaded', () => {
      * Toggles point-to-speak hover reading mode.
      */
     toggleHoverRead,
+    setCustomCommands,
+    executeActionKey,
 
     /**
      * @type {boolean} Whether voice recognition is currently active.

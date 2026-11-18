@@ -34,15 +34,27 @@ window.InclusionKit = window.InclusionKit || {};
         this.bindVisionControls();
         this.bindTypographyControls();
         this.bindHapticControls();
-        this.bindInspectorAndVivaModals();
+        this.bindInspectorToggle();
         this.bindKeyboardShortcuts();
         this.bindResetButton();
         this.updateActiveBadgeCounter();
 
-        // Subscribe to any state change to update the active badge counter
-        State.subscribe('*', () => this.updateActiveBadgeCounter());
+        // Subscribe to any state change to update the active badge counter & log analytics
+        let syncTimer = null;
+        State.subscribe('*', (key, newVal) => {
+          this.updateActiveBadgeCounter();
+          if (key && window.InclusionKit.DB) {
+            window.InclusionKit.DB.logAnalyticsEvent(key, 'setting_change', 0, { value: newVal });
+            clearTimeout(syncTimer);
+            syncTimer = setTimeout(() => {
+              if (window.InclusionKit.Workspace && typeof window.InclusionKit.Workspace.syncProfileSettings === 'function') {
+                window.InclusionKit.Workspace.syncProfileSettings();
+              }
+            }, 800);
+          }
+        });
 
-        console.log('%c InclusionKit Initialized %c HCI Topics 3 & 8 Ready ', 
+        console.log('%c InclusionKit %c Accessibility Management System Ready ', 
           'background: #0284c7; color: #fff; font-weight: bold; border-radius: 4px; padding: 2px 6px;',
           'background: #0f172a; color: #38bdf8; font-weight: bold; border-radius: 4px; padding: 2px 6px;'
         );
@@ -266,10 +278,9 @@ window.InclusionKit = window.InclusionKit || {};
     }
 
     /**
-     * WCAG Inspector & Viva Cheat Sheet Modal
+     * WCAG 2.1 Live Auditor Toggle
      */
-    bindInspectorAndVivaModals() {
-      // Toggle Inspector button in toolbar and header
+    bindInspectorToggle() {
       const inspectorBtns = document.querySelectorAll('.btn-trigger-inspector');
       inspectorBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -277,62 +288,10 @@ window.InclusionKit = window.InclusionKit || {};
           State.set('inspectorActive', !current);
         });
       });
-
-      // Viva Cheat Sheet Modal Open
-      const vivaModal = document.getElementById('viva-cheat-modal');
-      const openVivaBtns = document.querySelectorAll('.btn-open-viva');
-      const closeVivaBtn = document.getElementById('viva-modal-close');
-
-      const openModal = () => {
-        if (!vivaModal) return;
-        if (window.InclusionKit.WCAGInspector?.restoreFullViva) {
-          window.InclusionKit.WCAGInspector.restoreFullViva();
-        }
-        vivaModal.classList.remove('hidden');
-        vivaModal.setAttribute('aria-hidden', 'false');
-        if (closeVivaBtn) closeVivaBtn.focus();
-        State.announce('HCI Viva Reference Guide opened.');
-      };
-
-      const closeModal = () => {
-        if (!vivaModal) return;
-        vivaModal.classList.add('hidden');
-        vivaModal.setAttribute('aria-hidden', 'true');
-        State.announce('HCI Viva Reference Guide closed.');
-      };
-
-      openVivaBtns.forEach(btn => btn.addEventListener('click', openModal));
-      if (closeVivaBtn) closeVivaBtn.addEventListener('click', closeModal);
-
-      if (vivaModal) {
-        vivaModal.addEventListener('click', (e) => {
-          if (e.target === vivaModal) closeModal();
-        });
-
-        // WCAG 2.1.2 Focus Trap inside viva modal
-        vivaModal.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') {
-            closeModal();
-            return;
-          }
-          if (e.key !== 'Tab') return;
-          const focusables = Array.from(vivaModal.querySelectorAll('button:not([disabled]), [href], [tabindex="0"]')).filter(el => el.offsetParent !== null);
-          if (!focusables.length) return;
-          const first = focusables[0];
-          const last = focusables[focusables.length - 1];
-          if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        });
-      }
     }
 
     /**
-     * Global Keyboard Shortcuts for Examiner & User
+     * Global Keyboard Shortcuts
      */
     bindKeyboardShortcuts() {
       document.addEventListener('keydown', (e) => {
@@ -353,13 +312,6 @@ window.InclusionKit = window.InclusionKit || {};
         if (e.altKey && e.key.toLowerCase() === 'r') {
           e.preventDefault();
           State.resetAll();
-        }
-
-        // Alt + V: Open Viva Cheat Sheet
-        if (e.altKey && e.key.toLowerCase() === 'v') {
-          e.preventDefault();
-          const vivaBtn = document.querySelector('.btn-open-viva');
-          if (vivaBtn) vivaBtn.click();
         }
 
         // Escape: Dismiss any active Hover-to-Read mode
@@ -418,11 +370,10 @@ window.InclusionKit = window.InclusionKit || {};
             }
           }
 
-          // '?' -> Open Accessibility & Voice Guide
+          // '?' -> Open Accessibility Dock
           if (e.key === '?' || (e.shiftKey && e.key === '/')) {
             e.preventDefault();
-            const vivaBtn = document.querySelector('.btn-open-viva');
-            if (vivaBtn) vivaBtn.click();
+            if (this.dockToggleBtn) this.dockToggleBtn.click();
           }
         }
       });

@@ -196,7 +196,7 @@ window.InclusionKit = window.InclusionKit || {};
         </div>
         <p class="text-slate-300 mb-2 leading-relaxed">${data.summary}</p>
         <div class="bg-slate-800 p-2 rounded border border-slate-700 text-sky-300">
-          <span class="font-semibold block mb-0.5 text-white">🎓 Viva Explanation:</span>
+          <span class="font-semibold block mb-0.5 text-white">Implementation Note:</span>
           ${data.vivaTip}
         </div>
       `;
@@ -226,57 +226,7 @@ window.InclusionKit = window.InclusionKit || {};
     openDetailedCriterionModal(criterionKey) {
       const data = WCAG_CRITERIA_DB[criterionKey];
       if (!data) return;
-
-      const modal = document.getElementById('viva-cheat-modal');
-      const modalContent = document.getElementById('viva-cheat-content');
-      if (!modal || !modalContent) return;
-
-      // Preserve original full viva guide on first inspect
-      if (!this.originalVivaContent) {
-        this.originalVivaContent = modalContent.innerHTML;
-      }
-
-      modalContent.innerHTML = `
-        <div class="mb-3">
-          <button type="button" id="btn-restore-full-viva" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-900 font-bold text-xs transition-colors focus-visible:ring-2 focus-visible:ring-sky-500">
-            <span>←</span> Back to Full Viva Cheat Sheet
-          </button>
-        </div>
-        <div class="flex items-center gap-3 mb-4">
-          <span class="px-3 py-1 text-sm font-black rounded-lg bg-sky-500 text-white">${data.level}</span>
-          <h3 class="text-xl font-bold text-slate-900">${data.title}</h3>
-        </div>
-        <div class="space-y-4 text-slate-700">
-          <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
-            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-500 mb-1">Official WCAG 2.1 Principle</h4>
-            <p class="font-medium text-slate-900">${data.principle} &mdash; ${data.summary}</p>
-          </div>
-          <div class="p-4 bg-sky-50 border border-sky-200 rounded-lg">
-            <h4 class="font-bold text-xs uppercase tracking-wider text-sky-800 mb-1 flex items-center gap-1.5">
-              <span>🎓</span> Senior Architect Viva Defense Point
-            </h4>
-            <p class="text-sky-950 font-medium leading-relaxed">${data.vivaTip}</p>
-          </div>
-        </div>
-      `;
-
-      const backBtn = modalContent.querySelector('#btn-restore-full-viva');
-      if (backBtn) {
-        backBtn.addEventListener('click', () => this.restoreFullViva());
-      }
-
-      modal.classList.remove('hidden');
-      modal.setAttribute('aria-hidden', 'false');
-      // Trap focus
-      const closeBtn = modal.querySelector('#viva-modal-close');
-      if (closeBtn) closeBtn.focus();
-    }
-
-    restoreFullViva() {
-      const modalContent = document.getElementById('viva-cheat-content');
-      if (modalContent && this.originalVivaContent) {
-        modalContent.innerHTML = this.originalVivaContent;
-      }
+      State.announce(`${data.title} (${data.level}): ${data.summary}`);
     }
 
     updateInspectorButton(isActive) {

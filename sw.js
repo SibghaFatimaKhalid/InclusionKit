@@ -6,7 +6,7 @@
  * cross-origin resources (CDNs, external fonts, images).
  */
 
-const CACHE_NAME = 'inclusionkit-v1';
+const CACHE_NAME = 'inclusionkit-v2';
 
 /**
  * Assets to pre-cache during the install phase.
@@ -16,6 +16,8 @@ const PRE_CACHE_ASSETS = [
   './',
   './index.html',
   './css/style.css',
+  './js/config.js',
+  './js/db.js',
   './js/state.js',
   './js/colorFilters.js',
   './js/typography.js',
@@ -23,7 +25,7 @@ const PRE_CACHE_ASSETS = [
   './js/acousticEngine.js',
   './js/voiceEngine.js',
   './js/wcagInspector.js',
-  './js/ecommerceDemo.js',
+  './js/workspace.js',
   './js/app.js',
   './favicon.svg',
   './manifest.json',
