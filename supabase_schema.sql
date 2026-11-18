@@ -190,3 +190,7 @@ CREATE POLICY "Only admins can delete products"
       WHERE user_id = auth.uid() AND role = 'admin'
     )
   );
+
+-- 10. Grant Schema & Table Permissions to Supabase API Roles (RLS still enforces security)
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO anon, authenticated;

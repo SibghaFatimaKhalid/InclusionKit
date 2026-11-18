@@ -144,6 +144,7 @@ window.InclusionKit = window.InclusionKit || {};
       }
       this.renderCategories();
       this.renderProducts();
+      this.renderAdminProductsList();
     }
 
     loadCart() {
@@ -289,6 +290,38 @@ window.InclusionKit = window.InclusionKit || {};
             await DB.deleteProduct(btn.getAttribute('data-admin-del'));
             await this.loadProducts();
             window.InclusionKit?.Workspace?.showToast('Product removed from database');
+          } catch (err) {
+            window.InclusionKit?.Workspace?.showToast(err.message, true);
+          }
+        });
+      });
+    }
+
+    renderAdminProductsList() {
+      const box = document.getElementById('admin-products-list');
+      if (!box || this.userRole !== 'admin') return;
+      const dbItems = this.products.filter(p => !String(p.id).startsWith('seed-'));
+      if (!dbItems.length) {
+        box.innerHTML = `<p class="text-[11px] text-slate-500 italic">Showing starter catalog. Add a product above to manage database items.</p>`;
+        return;
+      }
+      box.innerHTML = `
+        <p class="text-[11px] font-bold text-slate-600">Database Products (${dbItems.length}):</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          ${dbItems.map(p => `
+            <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs">
+              <span class="font-semibold text-slate-800 truncate">${this.esc(p.name)} ($${p.price})</span>
+              <button type="button" data-admin-list-del="${p.id}" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold rounded shrink-0">Delete</button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      box.querySelectorAll('[data-admin-list-del]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          try {
+            await DB.deleteProduct(btn.getAttribute('data-admin-list-del'));
+            await this.loadProducts();
+            window.InclusionKit?.Workspace?.showToast('Product deleted from database');
           } catch (err) {
             window.InclusionKit?.Workspace?.showToast(err.message, true);
           }

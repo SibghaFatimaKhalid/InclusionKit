@@ -1,7 +1,7 @@
 {
-  "name": "InclusionKit — Inclusive Design & Visual Haptic Platform",
+  "name": "InclusionKit — Personalized Accessibility Management System",
   "short_name": "InclusionKit",
-  "description": "HCI Topic 3 (Inclusive Design for Accessibility) & Topic 8 (Visual Haptic & Tactile Emulation). WCAG 2.1 AAA compliant demonstration platform.",
+  "description": "Personalized Accessibility Management System & Inclusive Online Store.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -25,7 +25,7 @@
       "name": "Open Accessibility Engine",
       "short_name": "A11y Engine",
       "description": "Open the Adaptability Engine dock",
-      "url": "/HCI-Inclusion-Kit/#dock",
+      "url": "./#dock",
       "icons": [{ "src": "favicon.svg", "sizes": "any" }]
     }
   ]
