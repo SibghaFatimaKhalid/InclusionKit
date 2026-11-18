@@ -1,7 +1,7 @@
 /**
- * InclusionKit Cloud Configuration
- * Replace SUPABASE_URL and SUPABASE_ANON_KEY with your Supabase project credentials
- * before deploying to GitHub Pages, or configure them directly in the Cloud Setup UI.
+ * AccessiMart Cloud Configuration
+ * Roman Urdu: Is file mein Supabase database ka URL aur public Anon Key store
+ * hoti hai taake website online database se connect ho sake.
  */
 window.InclusionKit = window.InclusionKit || {};
 

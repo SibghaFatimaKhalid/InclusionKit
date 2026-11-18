@@ -1,17 +1,12 @@
 /**
- * sw.js — InclusionKit Service Worker
- * =====================================
- * Provides offline support and caching for the InclusionKit PWA.
- * Strategy: Cache-first for same-origin assets; Network-only for
- * cross-origin resources (CDNs, external fonts, images).
+ * sw.js — AccessiMart Service Worker (Offline & Cache Manager)
+ * Roman Urdu: Yeh file browser cache manage karti hai taake website fast load ho
+ * aur internet na hone par bhi basic files chal sakein.
  */
 
-const CACHE_NAME = 'inclusionkit-v11';
+const CACHE_NAME = 'accessimart-v12';
 
-/**
- * Assets to pre-cache during the install phase.
- * Relative paths ensure full compatibility across GitHub Pages, custom domains, and local servers.
- */
+// Yeh saari local files install ke waqt cache hoti hain
 const PRE_CACHE_ASSETS = [
   './',
   './index.html',
@@ -31,121 +26,48 @@ const PRE_CACHE_ASSETS = [
   './manifest.json',
 ];
 
-// ---------------------------------------------------------------------------
-// INSTALL — Pre-cache the app shell
-// ---------------------------------------------------------------------------
+// Install event: sab zaroori files ko cache mein save karta hai
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then(async (cache) => {
-        console.log('[SW] Pre-caching app shell assets...');
-        // Use Promise.allSettled so a single missing optional asset never breaks SW installation
-        await Promise.allSettled(
-          PRE_CACHE_ASSETS.map((url) =>
-            cache.add(url).catch((err) => console.warn('[SW] Cache item skipped:', url, err))
-          )
-        );
-      })
-      .then(() => {
-        console.log('[SW] Install complete. Skipping waiting phase.');
-        return self.skipWaiting();
-      })
-      .catch((err) => {
-        console.error('[SW] Pre-cache failed:', err);
-      })
+    caches.open(CACHE_NAME).then(async (cache) => {
+      await Promise.allSettled(
+        PRE_CACHE_ASSETS.map((url) => cache.add(url).catch(() => {}))
+      );
+    }).then(() => self.skipWaiting())
   );
 });
 
-// ---------------------------------------------------------------------------
-// ACTIVATE — Clean up stale caches and claim all open clients
-// ---------------------------------------------------------------------------
-/**
- * The activate event fires after install, once any old service worker has
- * been replaced. We delete any caches whose name doesn't match the current
- * CACHE_NAME, preventing stale assets from being served.
- *
- * `clients.claim()` makes this SW immediately control all open tabs without
- * requiring a page reload.
- */
+// Activate event: purane aur bekaar caches ko delete karta hai
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((cacheNames) => {
-        return Promise.all(
-          cacheNames
-            .filter((name) => name !== CACHE_NAME) // identify old/stale caches
-            .map((staleName) => {
-              console.log('[SW] Deleting stale cache:', staleName);
-              return caches.delete(staleName);
-            })
-        );
-      })
-      .then(() => {
-        console.log('[SW] Activation complete. Claiming all clients.');
-        return self.clients.claim();
-      })
+    caches.keys()
+      .then((names) => Promise.all(names.filter((n) => n !== CACHE_NAME).map((n) => caches.delete(n))))
+      .then(() => self.clients.claim())
   );
 });
 
-// ---------------------------------------------------------------------------
-// FETCH — Route requests using the appropriate caching strategy
-// ---------------------------------------------------------------------------
-/**
- * The fetch event intercepts every network request made by controlled pages.
- *
- * Routing logic:
- *  1. Cross-origin requests (Tailwind CDN, Google Fonts, Unsplash, etc.)
- *     → Network-only: always go to the network; no caching of third-party assets.
- *  2. Same-origin requests
- *     → Cache-first: serve from cache if available; fall back to network and
- *        store the fresh response in the cache for future use.
- */
+// Fetch event: Network-First strategy (pehle fresh file server se lata hai, offline ho to cache use karta hai)
 self.addEventListener('fetch', (event) => {
-  const requestURL = new URL(event.request.url);
+  if (event.request.method !== 'GET') return;
 
-  // --- Strategy 1: Network-only for cross-origin (CDN / external) requests ---
+  const requestURL = new URL(event.request.url);
+  // External CDNs (Tailwind, Supabase, Unsplash) ko direct network par chhor deta hai
   if (requestURL.origin !== self.location.origin) {
-    // Let the browser handle these normally; do not cache external resources.
-    return; // No event.respondWith → browser uses its default network fetch
+    return;
   }
 
-  // --- Strategy 2: Cache-first for same-origin requests ---
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Serve the cached copy immediately (fast, offline-capable)
-        return cachedResponse;
-      }
-
-      // Not in cache — fetch from network, cache the result, then return it
-      return fetch(event.request)
-        .then((networkResponse) => {
-          // Only cache valid, non-opaque same-origin responses
-          if (
-            !networkResponse ||
-            networkResponse.status !== 200 ||
-            networkResponse.type !== 'basic'
-          ) {
-            return networkResponse;
-          }
-
-          // Clone the response: one copy for the cache, one for the browser
-          const responseToCache = networkResponse.clone();
-
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-
-          return networkResponse;
-        })
-        .catch((err) => {
-          // Network failed and nothing in cache — log and propagate the error
-          console.warn('[SW] Fetch failed for:', event.request.url, err);
-          // Optionally return a custom offline fallback page here:
-          // return caches.match('/HCI-Inclusion-Kit/offline.html');
-        });
-    })
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          const copy = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return networkResponse;
+      })
+      .catch(async () => {
+        const cached = await caches.match(event.request);
+        return cached || new Response('Offline', { status: 503, statusText: 'Offline' });
+      })
   );
 });

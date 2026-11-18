@@ -1,13 +1,9 @@
 /**
  * ============================================================================
- * INCLUSIONKIT - Accessibility Management System Workspace Controller
+ * ACCESSIMART - Settings, Profiles, Help & Admin Workspace Controller
+ * Roman Urdu: Yeh file Store/Settings/Admin tabs switch karti hai, User
+ * Accessibility Presets apply karti hai, aur Login/Help/Reports handle karti hai.
  * ============================================================================
- * Manages:
- * 1. Personalized Accessibility Profiles & Presets
- * 2. Reading & Text-to-Speech (TTS) Studio with Resume History
- * 3. Custom Voice Command Macros
- * 4. HCI Usability Analytics & Domain-Specific Presets
- * 5. Accessibility Issue Reporter & Cloud Auth Modal
  */
 window.InclusionKit = window.InclusionKit || {};
 
@@ -155,13 +151,17 @@ window.InclusionKit = window.InclusionKit || {};
     }
 
     async refreshAllViews() {
-      await Promise.all([
-        this.renderVoiceCommands(),
-        this.renderReadingDocs(),
-        this.renderAnalytics(),
-        this.renderDomainPresets(),
-        this.renderReports()
-      ]);
+      try {
+        await Promise.allSettled([
+          this.renderVoiceCommands(),
+          this.renderReadingDocs(),
+          this.renderAnalytics(),
+          this.renderDomainPresets(),
+          this.renderReports()
+        ]);
+      } catch (err) {
+        console.warn('[Workspace] View refresh warning:', err.message);
+      }
       this.updateActivePresetUI();
     }
 

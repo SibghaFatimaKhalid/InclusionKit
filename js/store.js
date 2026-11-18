@@ -1,12 +1,9 @@
 /**
  * ============================================================================
- * INCLUSIONKIT STORE - Database-Driven Accessible E-Commerce Engine
+ * ACCESSIMART STORE - Database-Driven Accessible E-Commerce Engine
+ * Roman Urdu: Yeh file Online Store chalati hai — database se products/categories
+ * load karna, Guest/User/Admin roles check karna, Cart, Checkout aur Orders.
  * ============================================================================
- * - Products & categories loaded dynamically from Supabase `products` table
- * - Role-Based Access Control:
- *   * Guest (not signed in): View-only (cannot buy / add to cart)
- *   * User (signed in): Can add to cart, checkout, and view orders
- *   * Admin (role === 'admin'): Can add/delete store products in database
  */
 window.InclusionKit = window.InclusionKit || {};
 

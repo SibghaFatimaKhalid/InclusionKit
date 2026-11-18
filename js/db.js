@@ -1,9 +1,9 @@
 /**
  * ============================================================================
- * INCLUSIONKIT - Cloud Database & Auth Layer (Supabase + Local Fallback)
+ * ACCESSIMART - Cloud Database & Auth Layer (Supabase + Local Fallback)
+ * Roman Urdu: Yeh file Supabase PostgreSQL database aur Login/Signup handle
+ * karti hai. Agar internet/cloud na ho to localStorage fallback use hota hai.
  * ============================================================================
- * Connects to Supabase PostgreSQL + Auth when configured, and falls back
- * gracefully to localStorage so the app works offline or before cloud setup.
  */
 window.InclusionKit = window.InclusionKit || {};
 

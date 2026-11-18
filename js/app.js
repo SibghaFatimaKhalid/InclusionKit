@@ -1,11 +1,9 @@
 /**
  * ============================================================================
- * INCLUSIONKIT - Main Application Orchestrator & Adaptability Dock Controller
+ * ACCESSIMART - Main Application Controller
+ * Roman Urdu: Yeh file Accessibility Menu (dock), keyboard shortcuts (V, C, F,
+ * Alt+A, Alt+R, Esc), aur vision/font/haptic buttons ko State se jorti hai.
  * ============================================================================
- * 
- * Binds UI controls in the Floating Expandable Accessibility Dock to the
- * State Manager and modules. Manages keyboard shortcuts, active badges, and
- * viva documentation modals.
  */
 
 window.InclusionKit = window.InclusionKit || {};
@@ -398,7 +396,6 @@ window.InclusionKit = window.InclusionKit || {};
       if (State.get('lineHeight') !== 'normal') count++;
       if (State.get('readingRuler')) count++;
       if (State.get('reducedMotion')) count++;
-      if (State.get('inspectorActive')) count++;
 
       badge.textContent = count;
       badge.classList.toggle('hidden', count === 0);
