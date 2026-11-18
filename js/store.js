@@ -467,11 +467,22 @@ window.InclusionKit = window.InclusionKit || {};
         </button>
       `).join('');
 
+      const applySwatchVisual = (sw) => {
+        const label = document.getElementById('pm-selected-swatch-label');
+        const frame = document.getElementById('pm-image-frame');
+        if (label) label.textContent = `${sw.symbol} ${sw.name}`;
+        if (frame) frame.style.borderColor = sw.hex || '#0284c7';
+      };
+      applySwatchVisual(swatches[0]);
+
       swatchesContainer.querySelectorAll('[data-pm-swatch]').forEach(btn => {
         btn.addEventListener('click', () => {
           const sw = swatches.find(x => x.id === btn.getAttribute('data-pm-swatch'));
           if (!sw) return;
           this.selectedSwatch = sw;
+          applySwatchVisual(sw);
+          State?.announce(`Selected ${sw.name} finish.`);
+          window.InclusionKit?.AcousticEngine?.playTick?.();
           swatchesContainer.querySelectorAll('[data-pm-swatch]').forEach(b => {
             const active = b === btn;
             b.setAttribute('aria-pressed', active ? 'true' : 'false');

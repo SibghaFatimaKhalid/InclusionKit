@@ -43,10 +43,11 @@
    Applied to ALL focusable elements site-wide. Yellow ring on dark shadow
    gives maximum contrast against any background color (luminance-independent).
    -------------------------------------------------------------------------- */
-*:focus-visible {
+*:focus-visible,
+html.enhanced-focus *:focus {
   outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #0284c7) !important;
   outline-offset: var(--focus-ring-offset, 3px) !important;
-  box-shadow: 0 0 0 5px var(--haptic-pulse-color, rgba(2, 132, 199, 0.45)) !important;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.75), 0 0 0 6px var(--haptic-pulse-color, rgba(2, 132, 199, 0.45)) !important;
   border-radius: 4px !important;
   transition: outline-offset 0.1s ease !important;
 }
@@ -282,7 +283,8 @@ html.filter-grayscale    { filter: url('#filter-achromatopsia')!important; }
 }
 
 /* Pulsing focus glow (WCAG 2.4.11 enhanced indicator) */
-html.enhanced-focus *:focus-visible {
+html.enhanced-focus *:focus-visible,
+html.enhanced-focus *:focus {
   animation: haptic-focus-throb 1.2s infinite alternate ease-in-out;
 }
 
