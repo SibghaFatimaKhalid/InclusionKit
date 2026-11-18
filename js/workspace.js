@@ -129,10 +129,14 @@ window.InclusionKit = window.InclusionKit || {};
         btn.classList.toggle('hover:bg-slate-100', !active);
       });
 
-      if (viewName === 'analytics') this.renderAnalytics();
-      if (viewName === 'reading') this.renderReadingDocs();
-      if (viewName === 'voice') this.renderVoiceCommands();
-      if (viewName === 'reports') this.renderReports();
+      if (viewName === 'admin') {
+        this.renderAnalytics();
+        this.renderReports();
+        window.InclusionKit?.Store?.renderAdminProductsList();
+      }
+      if (viewName === 'settings') {
+        this.updateActivePresetUI();
+      }
       State.announce(`Switched to ${viewName} view`);
     }
 
@@ -608,6 +612,16 @@ window.InclusionKit = window.InclusionKit || {};
       }
       if (closeBtn && modal) {
         closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+      }
+
+      const helpModal = document.getElementById('help-modal');
+      const openHelpBtn = document.getElementById('btn-open-help');
+      const closeHelpBtn = document.getElementById('btn-close-help');
+      if (openHelpBtn && helpModal) {
+        openHelpBtn.addEventListener('click', () => helpModal.classList.remove('hidden'));
+      }
+      if (closeHelpBtn && helpModal) {
+        closeHelpBtn.addEventListener('click', () => helpModal.classList.add('hidden'));
       }
 
       if (authForm) {

@@ -587,10 +587,17 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     },
     {
-      patterns: ['open dashboard', 'go to dashboard', 'show dashboard', 'profiles', 'home'],
+      patterns: ['open settings', 'go to settings', 'accessibility settings', 'open dashboard', 'profiles'],
       action() {
-        window.InclusionKit?.Workspace?.switchView('dashboard');
-        speak('Dashboard and accessibility profiles opened');
+        window.InclusionKit?.Workspace?.switchView('settings');
+        speak('Accessibility settings opened');
+      },
+    },
+    {
+      patterns: ['open help', 'help', 'shortcuts', 'commands', 'what can i say'],
+      action() {
+        document.getElementById('btn-open-help')?.click();
+        speak('Accessibility help and shortcuts opened');
       },
     },
     {

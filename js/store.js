@@ -126,12 +126,15 @@ window.InclusionKit = window.InclusionKit || {};
       }
       this.userRole = DB ? await DB.getUserRole() : 'guest';
       const guestBanner = document.getElementById('store-guest-banner');
-      const adminPanel = document.getElementById('admin-store-panel');
+      const adminTab = document.getElementById('nav-admin-tab');
       const ordersCard = document.getElementById('store-orders-card');
 
       if (guestBanner) guestBanner.classList.toggle('hidden', this.userRole !== 'guest');
-      if (adminPanel) adminPanel.classList.toggle('hidden', this.userRole !== 'admin');
+      if (adminTab) adminTab.classList.toggle('hidden', this.userRole !== 'admin');
       if (ordersCard) ordersCard.classList.toggle('hidden', this.userRole === 'guest');
+      if (this.userRole !== 'admin' && window.InclusionKit?.Workspace?.currentView === 'admin') {
+        window.InclusionKit.Workspace.switchView('store');
+      }
     }
 
     async loadProducts() {
