@@ -268,7 +268,9 @@ window.InclusionKit = window.InclusionKit || {};
       focusThemeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           const theme = btn.getAttribute('data-focus-theme');
+          if (!State.get('enhancedFocus')) State.set('enhancedFocus', true);
           State.set('focusStyle', theme);
+          btn.focus();
         });
       });
     }
