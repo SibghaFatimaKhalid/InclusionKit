@@ -573,6 +573,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── 4. Workspace View Navigation ────────────────────────────────────────
     {
+      patterns: ['open store', 'go to store', 'show store', 'shop', 'products'],
+      action() {
+        window.InclusionKit?.Workspace?.switchView('store');
+        speak('Online store opened');
+      },
+    },
+    {
+      patterns: ['open cart', 'view cart', 'show cart'],
+      action() {
+        document.getElementById('header-cart-btn')?.click();
+        speak('Shopping cart opened');
+      },
+    },
+    {
       patterns: ['open dashboard', 'go to dashboard', 'show dashboard', 'profiles', 'home'],
       action() {
         window.InclusionKit?.Workspace?.switchView('dashboard');

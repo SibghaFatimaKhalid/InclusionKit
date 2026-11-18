@@ -24,6 +24,7 @@ const PRE_CACHE_ASSETS = [
   './js/visualHaptics.js',
   './js/acousticEngine.js',
   './js/voiceEngine.js',
+  './js/store.js',
   './js/workspace.js',
   './js/app.js',
   './favicon.svg',

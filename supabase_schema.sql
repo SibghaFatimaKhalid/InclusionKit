@@ -123,3 +123,70 @@ CREATE POLICY "Users can submit reports"
 CREATE POLICY "Users can update own reports"
   ON public.accessibility_reports FOR UPDATE
   USING (auth.uid() = user_id);
+
+-- 7. Online Store Orders
+CREATE TABLE IF NOT EXISTS public.orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  customer_name TEXT NOT NULL,
+  customer_email TEXT NOT NULL,
+  shipping_address TEXT NOT NULL,
+  items JSONB NOT NULL DEFAULT '[]'::jsonb,
+  total_amount NUMERIC(10,2) NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'confirmed',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own orders"
+  ON public.orders FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can place orders"
+  ON public.orders FOR INSERT
+  WITH CHECK (auth.uid() = user_id OR user_id IS NULL);
+
+-- 8. Role Column on Profiles (user | admin)
+ALTER TABLE public.accessibility_profiles
+  ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user';
+
+-- 9. Database-Driven Store Products (Public Read, Admin Write)
+CREATE TABLE IF NOT EXISTS public.products (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  price NUMERIC(10,2) NOT NULL,
+  original_price NUMERIC(10,2),
+  rating NUMERIC(2,1) NOT NULL DEFAULT 4.8,
+  reviews INT NOT NULL DEFAULT 120,
+  image_url TEXT NOT NULL,
+  description TEXT NOT NULL,
+  swatches JSONB NOT NULL DEFAULT '[{"id":"obsidian","name":"Obsidian Black","hex":"#0f172a","symbol":"●"},{"id":"azure","name":"Pacific Azure","hex":"#0284c7","symbol":"◆"}]'::jsonb,
+  created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can view store products"
+  ON public.products FOR SELECT
+  USING (true);
+
+CREATE POLICY "Only admins can add products"
+  ON public.products FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.accessibility_profiles
+      WHERE user_id = auth.uid() AND role = 'admin'
+    )
+  );
+
+CREATE POLICY "Only admins can delete products"
+  ON public.products FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.accessibility_profiles
+      WHERE user_id = auth.uid() AND role = 'admin'
+    )
+  );

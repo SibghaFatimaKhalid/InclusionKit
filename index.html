@@ -137,7 +137,8 @@
 
       <!-- Workspace View Tabs -->
       <nav aria-label="Workspace Sections" class="flex items-center gap-1 overflow-x-auto py-1">
-        <button type="button" data-nav-view="dashboard" aria-current="page" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition-colors whitespace-nowrap">Profiles</button>
+        <button type="button" data-nav-view="store" aria-current="page" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition-colors whitespace-nowrap">Store</button>
+        <button type="button" data-nav-view="dashboard" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">Profiles</button>
         <button type="button" data-nav-view="reading" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">Reading &amp; TTS</button>
         <button type="button" data-nav-view="voice" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">Voice Macros</button>
         <button type="button" data-nav-view="analytics" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">Analytics &amp; Presets</button>
@@ -164,6 +165,17 @@
                 id="btn-open-account"
                 class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-lg shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-sky-500">
           <span id="account-btn-label">Sign In / Cloud</span>
+        </button>
+
+        <!-- Shopping Cart Drawer Trigger -->
+        <button type="button" 
+                id="header-cart-btn"
+                class="relative p-2 text-slate-700 hover:text-sky-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-sky-500"
+                aria-label="Open Shopping Cart">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span id="cart-counter-badge" class="hidden absolute -top-1.5 -right-1.5 px-1.5 py-0.5 text-[10px] font-black bg-rose-600 text-white rounded-full min-w-[18px] text-center">0</span>
         </button>
       </div>
 
@@ -220,8 +232,62 @@
        ====================================================================== -->
   <main id="main-content" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 focus:outline-none space-y-8" tabindex="-1">
 
+    <!-- VIEW 0: ONLINE STORE (Powered by InclusionKit Accessibility Engine) -->
+    <section data-view-panel="store" class="space-y-6">
+      <div class="p-6 bg-gradient-to-r from-sky-900 via-slate-900 to-indigo-950 text-white rounded-2xl shadow-xl border border-sky-800/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30 mb-2">Inclusive E-Commerce Platform</span>
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight mb-1">InclusionKit Adaptive Tech Store</h2>
+          <p class="text-slate-300 text-sm">Browse assistive &amp; ergonomic hardware with multi-cue color swatches, voice navigation, TTS descriptions, and visual haptics.</p>
+        </div>
+        <div class="flex flex-wrap gap-2 shrink-0">
+          <button type="button" onclick="window.InclusionKit?.Workspace?.switchView('dashboard')" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-colors">Accessibility Profiles</button>
+        </div>
+      </div>
+
+      <!-- Guest View-Only Notice -->
+      <div id="store-guest-banner" class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex flex-wrap items-center justify-between gap-2 text-xs text-amber-950">
+        <span><strong>Guest Mode:</strong> You can browse products. Please sign in to add items to cart and place orders.</span>
+        <button type="button" onclick="document.getElementById('btn-open-account')?.click()" class="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800">Sign In to Buy</button>
+      </div>
+
+      <!-- Admin-Only Product Management Panel -->
+      <div id="admin-store-panel" class="hidden bg-white p-5 rounded-2xl border-2 border-sky-500/40 shadow-sm surface-card space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-black text-slate-900">Admin Panel: Add New Store Product</h3>
+          <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-sky-100 text-sky-800">Admin Only</span>
+        </div>
+        <form id="admin-add-product-form" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+          <input type="text" id="adm-prod-name" required placeholder="Product Name" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+          <input type="text" id="adm-prod-cat" required placeholder="Category (e.g., Audio)" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+          <input type="number" id="adm-prod-price" required min="1" step="0.01" placeholder="Price ($)" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+          <input type="url" id="adm-prod-img" placeholder="Image URL (optional)" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+          <button type="submit" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-black rounded-xl">Add Product</button>
+          <input type="text" id="adm-prod-desc" required placeholder="Short accessible product description..." class="sm:col-span-2 lg:col-span-5 px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+        </form>
+      </div>
+
+      <!-- Search & Dynamic Category Filter Bar -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm surface-card flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div id="store-categories-bar" class="flex flex-wrap items-center gap-1.5" role="group" aria-label="Product Categories"></div>
+        <div class="w-full md:w-72">
+          <label for="store-search-input" class="sr-only">Search products</label>
+          <input type="search" id="store-search-input" placeholder="Search products..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-medium" />
+        </div>
+      </div>
+
+      <!-- Product Catalog Grid -->
+      <div id="store-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+      <!-- Order History (Visible for Signed-In Users) -->
+      <div id="store-orders-card" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm surface-card space-y-3">
+        <h3 class="text-lg font-black text-slate-900">Your Recent Orders</h3>
+        <div id="store-orders-list" class="space-y-2.5"></div>
+      </div>
+    </section>
+
     <!-- VIEW 1: DASHBOARD & PERSONALIZED PROFILES -->
-    <section data-view-panel="dashboard" class="space-y-6">
+    <section data-view-panel="dashboard" class="hidden space-y-6">
       <div class="p-6 bg-gradient-to-r from-sky-900 via-slate-900 to-indigo-950 text-white rounded-2xl shadow-xl border border-sky-800/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 class="text-2xl sm:text-3xl font-black tracking-tight mb-1">Accessibility Profiles &amp; Workspace</h2>
@@ -749,6 +815,94 @@
     </div>
   </div>
 
+  <!-- ======================================================================
+       PRODUCT DETAIL MODAL (Multi-Cue Swatches + TTS + Visual Haptics)
+       ====================================================================== -->
+  <div id="product-detail-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="pm-title">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 relative max-h-[90vh] overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+      <button type="button" id="btn-close-product-modal" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-800 rounded-lg" aria-label="Close Product Details">&#10005;</button>
+      <div class="aspect-square rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
+        <img id="pm-image" src="" alt="" class="w-full h-full object-cover" />
+      </div>
+      <div class="flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <span id="pm-category" class="inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-sky-100 text-sky-800"></span>
+          <h3 id="pm-title" class="text-xl font-black text-slate-900"></h3>
+          <p id="pm-price" class="text-2xl font-black text-sky-700"></p>
+          <p id="pm-desc" class="text-xs text-slate-600 leading-relaxed"></p>
+          <button type="button" id="pm-listen-tts" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg text-xs font-bold">
+            <span>🔊 Listen (TTS)</span>
+          </button>
+        </div>
+
+        <div class="space-y-2">
+          <span class="block text-xs font-bold text-slate-700">Select Finish (Color + Shape):</span>
+          <div id="pm-swatches" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 pt-2 border-t border-slate-100">
+          <div class="flex items-center gap-2">
+            <button type="button" id="pm-qty-dec" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 font-black text-sm" aria-label="Decrease quantity">-</button>
+            <span id="pm-qty-val" class="w-6 text-center text-sm font-black">1</span>
+            <button type="button" id="pm-qty-inc" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 font-black text-sm" aria-label="Increase quantity">+</button>
+          </div>
+          <button type="button" id="pm-add-to-cart" class="flex-1 py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-black rounded-xl shadow">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       SHOPPING CART DRAWER
+       ====================================================================== -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex justify-end" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
+    <div class="bg-white w-full max-w-md h-full p-6 shadow-2xl flex flex-col justify-between">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+        <h3 id="cart-drawer-title" class="text-lg font-black text-slate-900">Your Shopping Cart</h3>
+        <button type="button" id="btn-close-cart" class="p-2 text-slate-400 hover:text-slate-800 rounded-lg" aria-label="Close Cart">&#10005;</button>
+      </div>
+      <div id="cart-items-list" class="flex-1 overflow-y-auto py-4 space-y-3"></div>
+      <div class="pt-4 border-t border-slate-200 space-y-3">
+        <div class="flex items-center justify-between text-sm font-black text-slate-900">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0.00</span>
+        </div>
+        <button type="button" id="btn-proceed-checkout" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white text-xs font-black rounded-xl shadow">Proceed to Accessible Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       ACCESSIBLE CHECKOUT MODAL (WCAG 3.3.1 Inline Validation + Cloud Order)
+       ====================================================================== -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 relative space-y-4">
+      <button type="button" id="btn-close-checkout" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-800 rounded-lg" aria-label="Close Checkout">&#10005;</button>
+      <div>
+        <h3 id="checkout-modal-title" class="text-xl font-black text-slate-900">Accessible Checkout</h3>
+        <p class="text-xs text-slate-500">Order Total: <strong id="checkout-total-label" class="text-sky-700">$0.00</strong></p>
+      </div>
+      <form id="accessible-checkout-form" class="space-y-3" novalidate>
+        <div>
+          <label for="checkout-name" class="block text-xs font-bold text-slate-700 mb-1">Full Name *</label>
+          <input type="text" id="checkout-name" required placeholder="Alex Mercer" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" aria-describedby="co-name-err" />
+          <p id="co-name-err" class="hidden text-xs text-rose-600 font-bold mt-1" role="alert"></p>
+        </div>
+        <div>
+          <label for="checkout-email" class="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
+          <input type="email" id="checkout-email" required placeholder="alex@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" aria-describedby="co-email-err" />
+          <p id="co-email-err" class="hidden text-xs text-rose-600 font-bold mt-1" role="alert"></p>
+        </div>
+        <div>
+          <label for="checkout-address" class="block text-xs font-bold text-slate-700 mb-1">Shipping Address *</label>
+          <textarea id="checkout-address" rows="2" required placeholder="Street, City, Postal Code" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm" aria-describedby="co-addr-err"></textarea>
+          <p id="co-addr-err" class="hidden text-xs text-rose-600 font-bold mt-1" role="alert"></p>
+        </div>
+        <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow">Confirm &amp; Place Order</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="ik-toast" class="hidden" role="status" aria-live="polite"></div>
 
@@ -772,6 +926,7 @@
   <script src="js/visualHaptics.js"></script>
   <script src="js/acousticEngine.js"></script>
   <script src="js/voiceEngine.js"></script>
+  <script src="js/store.js"></script>
   <script src="js/workspace.js"></script>
   <script src="js/app.js"></script>
 </body>

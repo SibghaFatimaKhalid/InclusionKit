@@ -68,7 +68,7 @@ window.InclusionKit = window.InclusionKit || {};
 
   class WorkspaceController {
     constructor() {
-      this.currentView = 'dashboard';
+      this.currentView = 'store';
       this.activeDocId = null;
       this.ttsUtterance = null;
       this.ttsCharIndex = 0;

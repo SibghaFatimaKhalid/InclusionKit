@@ -16,7 +16,9 @@ window.InclusionKit = window.InclusionKit || {};
     analytics: 'ik_local_analytics',
     domainPresets: 'ik_local_domain_presets',
     reports: 'ik_local_reports',
-    profile: 'ik_local_profile'
+    profile: 'ik_local_profile',
+    orders: 'ik_local_orders',
+    products: 'ik_local_products'
   };
 
   function readLocal(key, fallback = []) {
@@ -407,6 +409,115 @@ window.InclusionKit = window.InclusionKit || {};
       }
       const list = readLocal(LOCAL_KEYS.reports, []).map(r => r.id === id ? { ...r, status } : r);
       writeLocal(LOCAL_KEYS.reports, list);
+    }
+
+    // ── 7. Online Store Orders ─────────────────────────────────────────────
+    async getOrders() {
+      if (this.isCloudActive() && this.user) {
+        const { data, error } = await this.client
+          .from('orders')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        return data || [];
+      }
+      return readLocal(LOCAL_KEYS.orders, []);
+    }
+
+    async placeOrder({ customerName, customerEmail, shippingAddress, items, totalAmount }) {
+      const record = {
+        customer_name: customerName.trim(),
+        customer_email: customerEmail.trim(),
+        shipping_address: shippingAddress.trim(),
+        items: items || [],
+        total_amount: Number(totalAmount) || 0,
+        status: 'confirmed',
+        created_at: new Date().toISOString()
+      };
+
+      if (this.isCloudActive() && this.user) {
+        const { data, error } = await this.client
+          .from('orders')
+          .insert({ user_id: this.user.id, ...record })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      }
+
+      const orders = readLocal(LOCAL_KEYS.orders, []);
+      const item = { id: uid(), ...record };
+      orders.unshift(item);
+      writeLocal(LOCAL_KEYS.orders, orders);
+      return item;
+    }
+
+    // ── 8. Role & Database-Driven Store Products ───────────────────────────
+    async getUserRole() {
+      if (!this.user) return 'guest';
+      try {
+        const profile = await this.getProfile();
+        return profile?.role === 'admin' ? 'admin' : 'user';
+      } catch {
+        return 'user';
+      }
+    }
+
+    async getProducts() {
+      if (this.isCloudActive()) {
+        const { data, error } = await this.client
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        return data || [];
+      }
+      return readLocal(LOCAL_KEYS.products, []);
+    }
+
+    async addProduct({ name, category, price, originalPrice, imageUrl, description }) {
+      if (!name || !category || !price) throw new Error('Name, category, and price are required.');
+      const record = {
+        name: name.trim(),
+        category: category.trim(),
+        price: Number(price),
+        original_price: originalPrice ? Number(originalPrice) : Math.round(Number(price) * 1.25),
+        rating: 4.9,
+        reviews: 1,
+        image_url: (imageUrl || '').trim() || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80',
+        description: (description || '').trim() || 'Accessible adaptive technology product.',
+        swatches: [
+          { id: 'obsidian', name: 'Obsidian Black', hex: '#0f172a', symbol: '●' },
+          { id: 'azure', name: 'Pacific Azure', hex: '#0284c7', symbol: '◆' }
+        ],
+        created_at: new Date().toISOString()
+      };
+
+      if (this.isCloudActive() && this.user) {
+        const { data, error } = await this.client
+          .from('products')
+          .insert({ created_by: this.user.id, ...record })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      }
+
+      const list = readLocal(LOCAL_KEYS.products, []);
+      const item = { id: uid(), ...record };
+      list.unshift(item);
+      writeLocal(LOCAL_KEYS.products, list);
+      return item;
+    }
+
+    async deleteProduct(id) {
+      if (this.isCloudActive() && this.user) {
+        const { error } = await this.client.from('products').delete().eq('id', id);
+        if (error) throw error;
+        return;
+      }
+      const list = readLocal(LOCAL_KEYS.products, []).filter(p => p.id !== id);
+      writeLocal(LOCAL_KEYS.products, list);
     }
   }
 
