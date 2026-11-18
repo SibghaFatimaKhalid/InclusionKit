@@ -99,32 +99,43 @@ html[data-contrast="high"] header,
 html[data-contrast="high"] footer,
 html[data-contrast="high"] aside,
 html[data-contrast="high"] nav,
-html[data-contrast="high"] #cart-drawer,
-html[data-contrast="high"] [class*="bg-white"],
-html[data-contrast="high"] [class*="bg-slate"],
-html[data-contrast="high"] [class*="bg-sky"],
-html[data-contrast="high"] [class*="bg-emerald"],
+html[data-contrast="high"] section,
+html[data-contrast="high"] article,
+html[data-contrast="high"] #cart-drawer > div,
+html[data-contrast="high"] [role="dialog"] > div,
+html[data-contrast="high"] [class*="bg-"]:not(.toggle-indicator):not(.swatch-dot),
 html[data-high-contrast="true"] .surface-card,
 html[data-high-contrast="true"] header,
 html[data-high-contrast="true"] footer,
 html[data-high-contrast="true"] aside,
 html[data-high-contrast="true"] nav,
-html[data-high-contrast="true"] #cart-drawer,
-html[data-high-contrast="true"] [class*="bg-white"],
-html[data-high-contrast="true"] [class*="bg-slate"],
-html[data-high-contrast="true"] [class*="bg-sky"],
-html[data-high-contrast="true"] [class*="bg-emerald"] {
+html[data-high-contrast="true"] section,
+html[data-high-contrast="true"] article,
+html[data-high-contrast="true"] #cart-drawer > div,
+html[data-high-contrast="true"] [role="dialog"] > div,
+html[data-high-contrast="true"] [class*="bg-"]:not(.toggle-indicator):not(.swatch-dot) {
   background-color: #000000 !important;
+  background-image: none !important;
   border-color: #facc15 !important;
   color: #facc15 !important;
+}
+
+html[data-contrast="high"] [role="dialog"],
+html[data-high-contrast="true"] [role="dialog"] {
+  background-color: rgba(0, 0, 0, 0.88) !important;
 }
 
 html[data-contrast="high"] h1,
 html[data-contrast="high"] h2,
 html[data-contrast="high"] h3,
 html[data-contrast="high"] h4,
+html[data-contrast="high"] h5,
+html[data-contrast="high"] h6,
 html[data-contrast="high"] p,
 html[data-contrast="high"] span,
+html[data-contrast="high"] strong,
+html[data-contrast="high"] a,
+html[data-contrast="high"] kbd,
 html[data-contrast="high"] label,
 html[data-contrast="high"] li,
 html[data-contrast="high"] dt,
@@ -133,13 +144,24 @@ html[data-high-contrast="true"] h1,
 html[data-high-contrast="true"] h2,
 html[data-high-contrast="true"] h3,
 html[data-high-contrast="true"] h4,
+html[data-high-contrast="true"] h5,
+html[data-high-contrast="true"] h6,
 html[data-high-contrast="true"] p,
 html[data-high-contrast="true"] span,
+html[data-high-contrast="true"] strong,
+html[data-high-contrast="true"] a,
+html[data-high-contrast="true"] kbd,
 html[data-high-contrast="true"] label,
 html[data-high-contrast="true"] li,
 html[data-high-contrast="true"] dt,
 html[data-high-contrast="true"] dd {
   color: #facc15 !important;
+}
+
+html[data-contrast="high"] ::placeholder,
+html[data-high-contrast="true"] ::placeholder {
+  color: #fde047 !important;
+  opacity: 0.75 !important;
 }
 
 html[data-contrast="high"] button,

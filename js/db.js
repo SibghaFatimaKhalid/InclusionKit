@@ -161,7 +161,7 @@ window.InclusionKit = window.InclusionKit || {};
 
     // ── 2. Custom Voice Commands & Macros ──────────────────────────────────
     async getVoiceCommands() {
-      if (this.isCloudActive() && this.user) {
+      if (this.isCloudActive()) {
         const { data, error } = await this.client
           .from('voice_commands')
           .select('*')

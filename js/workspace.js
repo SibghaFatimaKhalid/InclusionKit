@@ -132,6 +132,7 @@ window.InclusionKit = window.InclusionKit || {};
       if (viewName === 'admin') {
         this.renderAnalytics();
         this.renderReports();
+        this.renderVoiceCommands();
         window.InclusionKit?.Store?.renderAdminProductsList();
       }
       if (viewName === 'settings') {
@@ -363,7 +364,7 @@ window.InclusionKit = window.InclusionKit || {};
           </div>
           <div class="flex items-center gap-2 shrink-0">
             <button type="button" data-load-doc="${doc.id}" class="px-2.5 py-1 text-xs font-bold bg-sky-600 text-white rounded-lg hover:bg-sky-700">Load</button>
-            <button type="button" data-del-doc="${doc.id}" class="px-2.5 py-1 text-xs font-bold bg-rose-100 text-rose-700 rounded-lg hover:bg-rose-200">Delete</button>
+            <button type="button" data-del-doc="${doc.id}" class="px-2.5 py-1 text-xs font-bold bg-slate-100 text-slate-800 rounded-lg hover:bg-slate-200">Delete</button>
           </div>
         </div>
       `).join('');
@@ -424,10 +425,10 @@ window.InclusionKit = window.InclusionKit || {};
       container.innerHTML = list.map(cmd => `
         <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
           <div>
-            <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">"${this.escapeHtml(cmd.phrase)}"</span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-800">"${this.escapeHtml(cmd.phrase)}"</span>
             <span class="text-xs text-slate-600 ml-2">&rarr; ${this.escapeHtml(cmd.action_key)}</span>
           </div>
-          <button type="button" data-del-macro="${cmd.id}" class="px-2.5 py-1 text-xs font-bold bg-rose-100 text-rose-700 rounded-lg hover:bg-rose-200">Remove</button>
+          <button type="button" data-del-macro="${cmd.id}" class="px-2.5 py-1 text-xs font-bold bg-slate-100 text-slate-800 rounded-lg hover:bg-slate-200">Remove</button>
         </div>
       `).join('');
 
@@ -515,7 +516,7 @@ window.InclusionKit = window.InclusionKit || {};
           </div>
           <div class="flex gap-2">
             <button type="button" data-apply-domain="${p.id}" class="px-2.5 py-1 text-xs font-bold bg-sky-600 text-white rounded-lg hover:bg-sky-700">Apply</button>
-            <button type="button" data-del-domain="${p.id}" class="px-2.5 py-1 text-xs font-bold bg-rose-100 text-rose-700 rounded-lg hover:bg-rose-200">Delete</button>
+            <button type="button" data-del-domain="${p.id}" class="px-2.5 py-1 text-xs font-bold bg-slate-100 text-slate-800 rounded-lg hover:bg-slate-200">Delete</button>
           </div>
         </div>
       `).join('');
@@ -570,8 +571,8 @@ window.InclusionKit = window.InclusionKit || {};
           <div>
             <div class="flex items-center gap-2 mb-1">
               <span class="text-xs font-bold text-slate-900">${this.escapeHtml(r.page_section)}</span>
-              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${r.severity === 'high' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">${this.escapeHtml(r.severity)}</span>
-              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${r.status === 'resolved' ? 'bg-emerald-100 text-emerald-800' : 'bg-sky-100 text-sky-800'}">${this.escapeHtml(r.status)}</span>
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${r.severity === 'high' ? 'bg-slate-100 text-slate-800' : 'bg-sky-100 text-slate-800'}">${this.escapeHtml(r.severity)}</span>
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${r.status === 'resolved' ? 'bg-sky-100 text-sky-800' : 'bg-sky-100 text-sky-800'}">${this.escapeHtml(r.status)}</span>
             </div>
             <p class="text-xs text-slate-700">${this.escapeHtml(r.description)}</p>
           </div>
@@ -688,13 +689,13 @@ window.InclusionKit = window.InclusionKit || {};
       if (badge) {
         if (DB.isCloudActive() && user) {
           badge.textContent = 'Cloud Synced';
-          badge.className = 'px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300';
+          badge.className = 'px-2 py-0.5 text-[10px] font-bold rounded-full bg-sky-100 text-sky-800 border border-sky-300';
         } else if (DB.isCloudActive()) {
           badge.textContent = 'Cloud Ready (Sign In)';
           badge.className = 'px-2 py-0.5 text-[10px] font-bold rounded-full bg-sky-100 text-sky-800 border border-sky-300';
         } else {
           badge.textContent = 'Local Mode';
-          badge.className = 'px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-300';
+          badge.className = 'px-2 py-0.5 text-[10px] font-bold rounded-full bg-sky-100 text-slate-800 border border-slate-300';
         }
       }
 
@@ -713,7 +714,7 @@ window.InclusionKit = window.InclusionKit || {};
       if (!toast) return;
       toast.textContent = message;
       toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl text-xs font-bold shadow-lg transition-all ${
-        isError ? 'bg-rose-600 text-white' : 'bg-slate-900 text-white'
+        isError ? 'bg-sky-600 text-white' : 'bg-slate-900 text-white'
       }`;
       toast.classList.remove('hidden');
       clearTimeout(this._toastTimer);

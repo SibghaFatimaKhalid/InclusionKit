@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="InclusionKit - Personalized Accessibility Management System with Cloud Profiles, Custom Voice Macros, Text-to-Speech Reading Studio, Usability Analytics, and Issue Reporting.">
+  <meta name="description" content="AccessiMart - Inclusive Adaptive Tech Store with personalized accessibility profiles, voice shopping, text-to-speech, and tactile feedback.">
   <meta name="keywords" content="Accessibility Management System, WCAG 2.1, Inclusive Design, Text-to-Speech, Voice Macros, OpenDyslexic, Colorblindness">
   <title>AccessiMart | Inclusive Adaptive Tech Store</title>
 
@@ -127,7 +127,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-xl font-black text-slate-900 tracking-tight">AccessiMart</h1>
-            <span id="cloud-status-badge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+            <span id="cloud-status-badge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-sky-100 text-slate-800 border border-slate-300">
               Local Mode
             </span>
           </div>
@@ -136,7 +136,7 @@
       </div>
 
       <!-- Workspace View Tabs -->
-      <nav aria-label="Workspace Sections" class="flex items-center gap-1 overflow-x-auto py-1">
+      <nav aria-label="Workspace Sections" class="w-full sm:w-auto order-3 sm:order-2 flex items-center gap-1 overflow-x-auto border-t sm:border-t-0 border-slate-100 pt-2 sm:pt-0 py-1">
         <button type="button" data-nav-view="store" aria-current="page" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition-colors whitespace-nowrap">Store</button>
         <button type="button" data-nav-view="settings" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">Settings</button>
         <button type="button" id="nav-admin-tab" data-nav-view="admin" class="hidden px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">Manage Store</button>
@@ -147,11 +147,11 @@
         <!-- Two-Way Voice Assistant Toggle (Key 'V') -->
         <button type="button" 
                 id="btn-voice-toggle"
-                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-800 bg-emerald-50 hover:bg-emerald-100 rounded-lg border border-emerald-300 transition-all focus-visible:ring-2 focus-visible:ring-emerald-500 shadow-sm"
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-800 bg-sky-50 hover:bg-sky-100 rounded-lg border border-sky-300 transition-all focus-visible:ring-2 focus-visible:ring-sky-500 shadow-sm"
                 aria-pressed="false"
                 aria-label="Toggle Voice Control (Press Key V)"
                 title="Toggle Hands-Free Voice Control (Press V)">
-          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
           </svg>
           <span class="hidden sm:inline">Voice</span>
@@ -172,7 +172,7 @@
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
           </svg>
-          <span id="cart-counter-badge" class="hidden absolute -top-1.5 -right-1.5 px-1.5 py-0.5 text-[10px] font-black bg-rose-600 text-white rounded-full min-w-[18px] text-center">0</span>
+          <span id="cart-counter-badge" class="hidden absolute -top-1.5 -right-1.5 px-1.5 py-0.5 text-[10px] font-black bg-sky-600 text-white rounded-full min-w-[18px] text-center">0</span>
         </button>
       </div>
 
@@ -186,12 +186,12 @@
          class="fixed top-20 right-4 sm:right-6 z-50 max-w-sm w-full pointer-events-none transition-all duration-300" 
          aria-label="Voice Control Status">
     <div id="voice-listening-badge" 
-         class="hidden pointer-events-auto bg-slate-900/95 backdrop-blur-md text-white p-3.5 rounded-2xl shadow-2xl border-2 border-emerald-400 flex items-start gap-3 text-xs"
+         class="hidden pointer-events-auto bg-slate-900/95 backdrop-blur-md text-white p-3.5 rounded-2xl shadow-2xl border-2 border-sky-400 flex items-start gap-3 text-xs"
          role="status" 
          aria-live="polite">
       <div class="relative flex-shrink-0 mt-0.5">
-        <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 block animate-ping absolute inset-0 opacity-75"></span>
-        <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 block relative"></span>
+        <span class="w-3.5 h-3.5 rounded-full bg-sky-400 block animate-ping absolute inset-0 opacity-75"></span>
+        <span class="w-3.5 h-3.5 rounded-full bg-sky-500 block relative"></span>
       </div>
       <div class="flex-1 min-w-0">
         <div class="flex items-center justify-between gap-2 mb-1">
@@ -225,13 +225,13 @@
   </aside>
 
   <!-- ======================================================================
-       MAIN CONTENT: Interactive Demo Workspace (E-Commerce Showcase)
+       MAIN CONTENT: Storefront, Settings, and Admin Management
        ====================================================================== -->
   <main id="main-content" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 focus:outline-none space-y-8" tabindex="-1">
 
     <!-- VIEW 1: ONLINE STORE -->
     <section data-view-panel="store" class="space-y-6">
-      <div class="p-6 bg-gradient-to-r from-sky-900 via-slate-900 to-indigo-950 text-white rounded-2xl shadow-xl border border-sky-800/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="p-6 bg-gradient-to-r from-slate-900 to-sky-950 text-white rounded-2xl shadow-xl border border-sky-800/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30 mb-2">Adaptive Tech Store</span>
           <h2 class="text-2xl sm:text-3xl font-black tracking-tight mb-1">AccessiMart Store</h2>
@@ -243,7 +243,7 @@
       </div>
 
       <!-- Guest View-Only Notice -->
-      <div id="store-guest-banner" class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex flex-wrap items-center justify-between gap-2 text-xs text-amber-950">
+      <div id="store-guest-banner" class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-900">
         <span><strong>Guest Mode:</strong> You can browse products. Please sign in to add items to cart and place orders.</span>
         <button type="button" onclick="document.getElementById('btn-open-account')?.click()" class="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800">Sign In to Buy</button>
       </div>
@@ -275,7 +275,7 @@
           <p class="text-xs text-slate-600 mt-0.5">Choose a preset or open the Adaptability Engine (<kbd class="px-1 py-0.5 bg-slate-100 border rounded font-mono">Alt + A</kbd>) for custom controls.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <button type="button" id="btn-open-help" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-sm">Help: Shortcuts &amp; Voice</button>
+          <button type="button" id="btn-open-help" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-sm">Help: Shortcuts &amp; Voice</button>
           <button type="button" id="btn-save-profile-now" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-sm">Save My Settings</button>
         </div>
       </div>
@@ -289,19 +289,19 @@
         </button>
 
         <button type="button" data-apply-preset="dyslexia" class="text-left p-5 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-sky-500 transition-all surface-card">
-          <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800 mb-2">OpenDyslexic + Ruler</span>
+          <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded bg-sky-100 text-sky-800 mb-2">OpenDyslexic + Ruler</span>
           <h3 class="font-black text-slate-900 text-base">Dyslexia Support</h3>
           <p class="text-xs text-slate-600 mt-1">Bottom-weighted OpenDyslexic font, wide spacing, loose line height, and reading ruler.</p>
         </button>
 
         <button type="button" data-apply-preset="color-blind" class="text-left p-5 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-sky-500 transition-all surface-card">
-          <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded bg-amber-100 text-amber-800 mb-2">CVD Matrix Filter</span>
+          <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded bg-sky-100 text-slate-800 mb-2">CVD Matrix Filter</span>
           <h3 class="font-black text-slate-900 text-base">Color Blindness</h3>
           <p class="text-xs text-slate-600 mt-1">Protanopia color correction with high-visibility yellow focus indicators.</p>
         </button>
 
         <button type="button" data-apply-preset="motor" class="text-left p-5 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-sky-500 transition-all surface-card">
-          <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded bg-purple-100 text-purple-800 mb-2">Haptics + Switch</span>
+          <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded bg-sky-100 text-sky-800 mb-2">Haptics + Switch</span>
           <h3 class="font-black text-slate-900 text-base">Motor &amp; Switch</h3>
           <p class="text-xs text-slate-600 mt-1">Visual haptics, acoustic micro-ticks, reduced motion, and 125% target scaling.</p>
         </button>
@@ -327,7 +327,7 @@
               <option value="high">High (Blocker)</option>
             </select>
             <textarea id="report-desc-input" rows="2" required placeholder="Describe the issue..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs"></textarea>
-            <button type="submit" class="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl">Submit Feedback</button>
+            <button type="submit" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl">Submit Feedback</button>
           </form>
         </div>
       </div>
@@ -348,7 +348,7 @@
           <input type="text" id="adm-prod-name" required placeholder="Product Name" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
           <input type="text" id="adm-prod-cat" required placeholder="Category (e.g., Audio)" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
           <input type="number" id="adm-prod-price" required min="1" step="0.01" placeholder="Price ($)" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
-          <input type="url" id="adm-prod-img" placeholder="Image URL (optional)" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+          <input type="file" id="adm-prod-img" accept="image/*" aria-label="Upload Product Image" class="px-2.5 py-1.5 rounded-xl border border-slate-300 text-xs bg-white file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100" />
           <button type="submit" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-black rounded-xl">Add Product</button>
           <input type="text" id="adm-prod-desc" required placeholder="Short accessible product description..." class="sm:col-span-2 lg:col-span-5 px-3 py-2 rounded-xl border border-slate-300 text-xs" />
         </form>
@@ -370,6 +370,44 @@
           <h3 class="text-lg font-black text-slate-900">User Accessibility Reports</h3>
           <div id="reports-list" class="space-y-2.5 max-h-64 overflow-y-auto"></div>
         </div>
+      </div>
+
+      <!-- Admin Voice Command Manager -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm surface-card space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-black text-slate-900">Manage Store Voice Commands</h3>
+            <p class="text-xs text-slate-500">Add custom spoken phrases for store navigation and accessibility actions.</p>
+          </div>
+          <span class="px-2.5 py-1 text-[10px] font-bold rounded-full bg-sky-100 text-sky-800">Voice Engine</span>
+        </div>
+        <form id="voice-macro-form" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <input type="text" id="macro-phrase-input" required placeholder="Spoken phrase (e.g., show audio)" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+          <select id="macro-action-select" class="px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white">
+            <option value="nav_store">Open Store</option>
+            <option value="open_cart">Open Cart</option>
+            <option value="close_cart">Close Cart</option>
+            <option value="checkout">Checkout</option>
+            <option value="nav_settings">Open Settings</option>
+            <option value="open_help">Open Help</option>
+            <option value="cat_all">Show All Products</option>
+            <option value="cat_audio">Show Audio Category</option>
+            <option value="cat_input">Show Input Devices</option>
+            <option value="cat_displays">Show Displays</option>
+            <option value="cat_wearables">Show Wearables</option>
+            <option value="preset_low_vision">Low Vision Mode</option>
+            <option value="preset_dyslexia">Dyslexia Mode</option>
+            <option value="preset_color_blind">Color Blind Mode</option>
+            <option value="preset_motor">Motor Mode</option>
+            <option value="toggle_high_contrast">Toggle High Contrast</option>
+            <option value="toggle_dyslexic_font">Toggle Dyslexia Font</option>
+            <option value="toggle_reading_ruler">Toggle Reading Ruler</option>
+            <option value="increase_text">Bigger Text</option>
+            <option value="reset_all">Reset All Settings</option>
+          </select>
+          <button type="submit" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-black rounded-xl">Add Voice Command</button>
+        </form>
+        <div id="voice-macros-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-60 overflow-y-auto"></div>
       </div>
     </section>
 
@@ -396,7 +434,7 @@
       
       <!-- Active Settings Badge Counter -->
       <span id="dock-active-count" 
-            class="hidden absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-400 text-slate-950 font-black text-xs items-center justify-center border-2 border-white shadow-md">
+            class="hidden absolute -top-1 -right-1 w-6 h-6 rounded-full bg-slate-900 text-white font-black text-xs items-center justify-center border-2 border-white shadow-md">
         0
       </span>
       
@@ -439,13 +477,13 @@
       <!-- Dock Segmented Tabs -->
       <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-bold" role="tablist">
         <button type="button" data-dock-tab="vision" role="tab" aria-selected="true" class="flex-1 py-2.5 text-center border-b-2 border-sky-600 text-sky-600 transition-colors">
-          🎨 Vision
+          <svg class="w-3.5 h-3.5 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Vision
         </button>
         <button type="button" data-dock-tab="typography" role="tab" aria-selected="false" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-colors">
-          🔤 Type
+          <svg class="w-3.5 h-3.5 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M12 6v12"/></svg>Type
         </button>
         <button type="button" data-dock-tab="haptics" role="tab" aria-selected="false" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-colors">
-          📳 Haptic
+          <svg class="w-3.5 h-3.5 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Haptic
         </button>
       </div>
 
@@ -598,7 +636,7 @@
 
         </div>
 
-        <!-- SECTION 3: VISUAL HAPTICS & FOCUS (TOPIC 8) -->
+        <!-- SECTION 3: VISUAL HAPTICS & FOCUS -->
         <div data-dock-section="haptics" class="space-y-5 hidden">
           
           <!-- Visual Haptic Feedback Switches -->
@@ -698,10 +736,10 @@
       <button type="button" id="btn-close-account" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-800 rounded-lg" aria-label="Close Account Dialog">&#10005;</button>
       <h3 id="account-modal-title" class="text-xl font-black text-slate-900">Account &amp; Cloud Sync</h3>
 
-      <div id="auth-signed-in-box" class="hidden p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between">
+      <div id="auth-signed-in-box" class="hidden p-4 bg-sky-50 border border-sky-200 rounded-xl flex items-center justify-between">
         <div>
-          <p class="text-xs font-bold text-emerald-900">Signed in as</p>
-          <p id="auth-user-email" class="text-sm font-black text-emerald-700"></p>
+          <p class="text-xs font-bold text-sky-900">Signed in as</p>
+          <p id="auth-user-email" class="text-sm font-black text-sky-700"></p>
         </div>
         <button type="button" id="btn-auth-signout" class="px-3 py-1.5 bg-slate-900 text-white text-xs font-bold rounded-lg">Sign Out</button>
       </div>
@@ -721,7 +759,7 @@
         <form id="cloud-config-form" class="space-y-2">
           <input type="url" id="cfg-supabase-url" placeholder="https://your-project.supabase.co" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono" />
           <input type="text" id="cfg-supabase-key" placeholder="Supabase Anon Key" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono" />
-          <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg">Connect Cloud Database</button>
+          <button type="submit" class="w-full py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-lg">Connect Cloud Database</button>
         </form>
       </div>
     </div>
@@ -742,8 +780,8 @@
           <h3 id="pm-title" class="text-xl font-black text-slate-900"></h3>
           <p id="pm-price" class="text-2xl font-black text-sky-700"></p>
           <p id="pm-desc" class="text-xs text-slate-600 leading-relaxed"></p>
-          <button type="button" id="pm-listen-tts" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg text-xs font-bold">
-            <span>🔊 Listen (TTS)</span>
+          <button type="button" id="pm-listen-tts" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-300 rounded-lg text-xs font-bold">
+            <span>Listen (TTS)</span>
           </button>
         </div>
 
@@ -798,19 +836,19 @@
         <div>
           <label for="checkout-name" class="block text-xs font-bold text-slate-700 mb-1">Full Name *</label>
           <input type="text" id="checkout-name" required placeholder="Alex Mercer" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" aria-describedby="co-name-err" />
-          <p id="co-name-err" class="hidden text-xs text-rose-600 font-bold mt-1" role="alert"></p>
+          <p id="co-name-err" class="hidden text-xs text-slate-700 font-bold mt-1" role="alert"></p>
         </div>
         <div>
           <label for="checkout-email" class="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
           <input type="email" id="checkout-email" required placeholder="alex@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" aria-describedby="co-email-err" />
-          <p id="co-email-err" class="hidden text-xs text-rose-600 font-bold mt-1" role="alert"></p>
+          <p id="co-email-err" class="hidden text-xs text-slate-700 font-bold mt-1" role="alert"></p>
         </div>
         <div>
           <label for="checkout-address" class="block text-xs font-bold text-slate-700 mb-1">Shipping Address *</label>
           <textarea id="checkout-address" rows="2" required placeholder="Street, City, Postal Code" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm" aria-describedby="co-addr-err"></textarea>
-          <p id="co-addr-err" class="hidden text-xs text-rose-600 font-bold mt-1" role="alert"></p>
+          <p id="co-addr-err" class="hidden text-xs text-slate-700 font-bold mt-1" role="alert"></p>
         </div>
-        <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow">Confirm &amp; Place Order</button>
+        <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white text-xs font-black rounded-xl shadow">Confirm &amp; Place Order</button>
       </form>
     </div>
   </div>
@@ -819,31 +857,74 @@
        HELP MODAL: Keyboard Shortcuts & Voice Commands
        ====================================================================== -->
   <div id="help-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="help-modal-title">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 relative max-h-[85vh] overflow-y-auto space-y-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 relative max-h-[88vh] overflow-y-auto space-y-5">
       <button type="button" id="btn-close-help" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-800 rounded-lg" aria-label="Close Help">&#10005;</button>
-      <h3 id="help-modal-title" class="text-xl font-black text-slate-900">Store Accessibility Help</h3>
-
-      <div class="space-y-2">
-        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Keyboard Shortcuts</h4>
-        <ul class="text-xs text-slate-700 space-y-1.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-          <li><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">V</kbd> &mdash; Toggle Voice Assistant</li>
-          <li><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">C</kbd> &mdash; Toggle High Contrast Mode</li>
-          <li><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">F</kbd> &mdash; Cycle Text Size (100% / 125% / 150%)</li>
-          <li><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">Alt + A</kbd> &mdash; Open / Close Adaptability Dock</li>
-          <li><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">Alt + R</kbd> &mdash; Reset All Settings</li>
-        </ul>
+      <div>
+        <h3 id="help-modal-title" class="text-xl font-black text-slate-900">Store Help &amp; Voice Guide</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Use simple keyboard keys or speak in plain English to control the store.</p>
       </div>
 
       <div class="space-y-2">
-        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Voice Commands (Press V &amp; Speak)</h4>
-        <ul class="text-xs text-slate-700 space-y-1.5 bg-emerald-50 p-3.5 rounded-xl border border-emerald-200">
-          <li><strong>"Open store"</strong> / <strong>"Open cart"</strong> / <strong>"Close cart"</strong> / <strong>"Checkout"</strong></li>
-          <li><strong>"Open settings"</strong> / <strong>"Open help"</strong> / <strong>"Sign in"</strong></li>
-          <li><strong>"Show all products"</strong> / <strong>"Show audio"</strong> / <strong>"Show keyboards"</strong> / <strong>"Show displays"</strong> / <strong>"Show wearables"</strong></li>
-          <li><strong>"Low vision mode"</strong> / <strong>"Dyslexia mode"</strong> / <strong>"Color blind mode"</strong> / <strong>"Motor mode"</strong></li>
-          <li><strong>"High contrast"</strong> / <strong>"Normal contrast"</strong> / <strong>"Dyslexia font"</strong> / <strong>"Reading ruler"</strong></li>
-          <li><strong>"Zoom in"</strong> / <strong>"Zoom out"</strong> / <strong>"Read page"</strong> / <strong>"Stop reading"</strong> / <strong>"Reset all"</strong></li>
-        </ul>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Keyboard Shortcuts</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+          <div><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">V</kbd> &mdash; Turn Voice On / Off</div>
+          <div><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">C</kbd> &mdash; Turn High Contrast On / Off</div>
+          <div><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">F</kbd> &mdash; Change Text Size</div>
+          <div><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">Alt + A</kbd> &mdash; Open Accessibility Menu</div>
+          <div><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">Alt + R</kbd> &mdash; Reset All Settings</div>
+          <div><kbd class="px-1.5 py-0.5 bg-white border rounded font-mono font-bold">Esc</kbd> &mdash; Close Open Window</div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Easy Voice Commands (Press V &amp; Speak)</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3.5 rounded-xl bg-sky-50 border border-sky-200 space-y-1.5">
+            <h5 class="font-black text-sky-900">Shopping &amp; Store</h5>
+            <ul class="text-sky-950 space-y-1">
+              <li>&bull; <strong>"Open store"</strong> &mdash; Go to store</li>
+              <li>&bull; <strong>"Open cart"</strong> / <strong>"Close cart"</strong></li>
+              <li>&bull; <strong>"Checkout"</strong> &mdash; Start order checkout</li>
+              <li>&bull; <strong>"Show all products"</strong></li>
+              <li>&bull; <strong>"Show audio"</strong> / <strong>"Show keyboards"</strong></li>
+              <li>&bull; <strong>"Show displays"</strong> / <strong>"Show wearables"</strong></li>
+            </ul>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-sky-50 border border-sky-200 space-y-1.5">
+            <h5 class="font-black text-sky-900">Text &amp; Reading</h5>
+            <ul class="text-sky-950 space-y-1">
+              <li>&bull; <strong>"Bigger text"</strong> / <strong>"Smaller text"</strong></li>
+              <li>&bull; <strong>"Easy reading font"</strong> / <strong>"Normal font"</strong></li>
+              <li>&bull; <strong>"Reading ruler"</strong> &mdash; Line guide</li>
+              <li>&bull; <strong>"Read page"</strong> &mdash; Listen aloud</li>
+              <li>&bull; <strong>"Stop reading"</strong> &mdash; Stop voice</li>
+              <li>&bull; <strong>"Scroll down"</strong> / <strong>"Scroll up"</strong></li>
+            </ul>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 space-y-1.5">
+            <h5 class="font-black text-slate-900">Colors &amp; Presets</h5>
+            <ul class="text-slate-900 space-y-1">
+              <li>&bull; <strong>"High contrast"</strong> / <strong>"Normal contrast"</strong></li>
+              <li>&bull; <strong>"Low vision mode"</strong></li>
+              <li>&bull; <strong>"Dyslexia mode"</strong></li>
+              <li>&bull; <strong>"Color blind mode"</strong></li>
+              <li>&bull; <strong>"Motor mode"</strong></li>
+            </ul>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 space-y-1.5">
+            <h5 class="font-black text-slate-900">Account &amp; Help</h5>
+            <ul class="text-slate-800 space-y-1">
+              <li>&bull; <strong>"Open settings"</strong></li>
+              <li>&bull; <strong>"Sign in"</strong> &mdash; Open login</li>
+              <li>&bull; <strong>"Open menu"</strong> / <strong>"Close menu"</strong></li>
+              <li>&bull; <strong>"Help"</strong> / <strong>"Close help"</strong></li>
+              <li>&bull; <strong>"Reset all"</strong> &mdash; Default settings</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>

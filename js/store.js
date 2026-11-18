@@ -237,12 +237,12 @@ window.InclusionKit = window.InclusionKit || {};
           <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
             <img src="${this.esc(img)}" alt="${this.esc(p.name)}" class="w-full h-full object-cover" loading="lazy" />
             <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-900/85 text-white">${this.esc(p.category)}</span>
-            ${isAdmin && !String(p.id).startsWith('seed-') ? `<button type="button" data-admin-del="${p.id}" class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-600 text-white hover:bg-rose-700">Delete</button>` : ''}
+            ${isAdmin && !String(p.id).startsWith('seed-') ? `<button type="button" data-admin-del="${p.id}" class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-600 text-white hover:bg-rose-700">Delete</button>` : ''}
           </div>
           <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
             <div class="space-y-1.5">
               <div class="flex items-center justify-between gap-2">
-                <span class="text-xs font-bold text-amber-600">★ ${p.rating || 4.8} (${p.reviews || 1})</span>
+                <span class="text-xs font-bold text-sky-600">★ ${p.rating || 4.8} (${p.reviews || 1})</span>
                 <span class="text-xs text-slate-400 line-through">$${orig}</span>
               </div>
               <h3 class="font-black text-slate-900 text-base leading-snug">${this.esc(p.name)}</h3>
@@ -252,7 +252,7 @@ window.InclusionKit = window.InclusionKit || {};
             <div class="flex flex-wrap items-center gap-1.5" aria-label="Available finishes">
               ${swatches.map(s => `
                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-[10px] font-semibold text-slate-700">
-                  <span class="w-2.5 h-2.5 rounded-full border border-slate-300 inline-block" style="background:${s.hex}"></span>
+                  <span class="swatch-dot w-2.5 h-2.5 rounded-full border border-slate-300 inline-block" style="background:${s.hex}"></span>
                   <span>${s.symbol}</span>
                   <span>${this.esc(s.name.split(' ')[0])}</span>
                 </span>
@@ -314,7 +314,7 @@ window.InclusionKit = window.InclusionKit || {};
           ${dbItems.map(p => `
             <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs">
               <span class="font-semibold text-slate-800 truncate">${this.esc(p.name)} ($${p.price})</span>
-              <button type="button" data-admin-list-del="${p.id}" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold rounded shrink-0">Delete</button>
+              <button type="button" data-admin-list-del="${p.id}" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-white text-[10px] font-bold rounded shrink-0">Delete</button>
             </div>
           `).join('')}
         </div>
@@ -343,11 +343,14 @@ window.InclusionKit = window.InclusionKit || {};
           return;
         }
         try {
+          const fileInput = document.getElementById('adm-prod-img');
+          const file = fileInput?.files?.[0];
+          const imageUrl = file ? await this.readAndCompressImage(file) : '';
           await DB.addProduct({
             name: document.getElementById('adm-prod-name').value,
             category: document.getElementById('adm-prod-cat').value,
             price: document.getElementById('adm-prod-price').value,
-            imageUrl: document.getElementById('adm-prod-img').value,
+            imageUrl,
             description: document.getElementById('adm-prod-desc').value
           });
           form.reset();
@@ -356,6 +359,28 @@ window.InclusionKit = window.InclusionKit || {};
         } catch (err) {
           window.InclusionKit?.Workspace?.showToast(err.message, true);
         }
+      });
+    }
+
+    readAndCompressImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('Failed to read image file.'));
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = () => reject(new Error('Invalid image file.'));
+          img.onload = () => {
+            const maxW = 640;
+            const scale = img.width > maxW ? maxW / img.width : 1;
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL('image/jpeg', 0.8));
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
       });
     }
 
@@ -439,7 +464,7 @@ window.InclusionKit = window.InclusionKit || {};
       swatchesContainer.innerHTML = swatches.map((s, idx) => `
         <button type="button" data-pm-swatch="${s.id}" aria-pressed="${idx === 0 ? 'true' : 'false'}"
                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${idx === 0 ? 'border-sky-600 bg-sky-50 text-sky-900 ring-2 ring-sky-500/30' : 'border-slate-200 bg-white text-slate-700'}">
-          <span class="w-3.5 h-3.5 rounded-full border border-slate-300" style="background:${s.hex}"></span>
+          <span class="swatch-dot w-3.5 h-3.5 rounded-full border border-slate-300" style="background:${s.hex}"></span>
           <span>${s.symbol}</span>
           <span>${this.esc(s.name)}</span>
         </button>
@@ -545,7 +570,7 @@ window.InclusionKit = window.InclusionKit || {};
               <button type="button" data-cart-dec="${idx}" class="w-6 h-6 rounded bg-white border border-slate-300 text-xs font-bold">-</button>
               <span class="text-xs font-bold">${item.qty}</span>
               <button type="button" data-cart-inc="${idx}" class="w-6 h-6 rounded bg-white border border-slate-300 text-xs font-bold">+</button>
-              <button type="button" data-cart-del="${idx}" class="ml-auto text-[11px] font-bold text-rose-600 hover:underline">Remove</button>
+              <button type="button" data-cart-del="${idx}" class="ml-auto text-[11px] font-bold text-slate-700 hover:underline">Remove</button>
             </div>
           </div>
         </div>
@@ -670,7 +695,7 @@ window.InclusionKit = window.InclusionKit || {};
           <div>
             <div class="flex items-center gap-2">
               <span class="text-xs font-black text-slate-900">Order #${String(o.id).slice(0, 8)}</span>
-              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${this.esc(o.status)}</span>
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-sky-100 text-sky-800">${this.esc(o.status)}</span>
             </div>
             <p class="text-xs text-slate-600 mt-0.5">${(o.items || []).map(i => `${i.qty}x ${this.esc(i.name)}`).join(', ')}</p>
           </div>

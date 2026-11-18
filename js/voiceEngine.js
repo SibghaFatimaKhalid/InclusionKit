@@ -76,6 +76,63 @@ document.addEventListener('DOMContentLoaded', () => {
         window.InclusionKit?.Workspace?.switchView('admin');
         speak('Admin panel opened');
         break;
+      case 'open_cart':
+        document.getElementById('header-cart-btn')?.click();
+        speak('Shopping cart opened');
+        break;
+      case 'close_cart':
+        document.getElementById('cart-drawer')?.classList.add('hidden');
+        speak('Shopping cart closed');
+        break;
+      case 'checkout':
+        document.getElementById('btn-proceed-checkout')?.click();
+        speak('Opening checkout');
+        break;
+      case 'open_help':
+        document.getElementById('help-modal')?.classList.remove('hidden');
+        speak('Help opened');
+        break;
+      case 'cat_all':
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="All"]')?.click();
+        speak('Showing all products');
+        break;
+      case 'cat_audio':
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="Audio"]')?.click();
+        speak('Showing audio products');
+        break;
+      case 'cat_input':
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="Input Devices"]')?.click();
+        speak('Showing input devices');
+        break;
+      case 'cat_displays':
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="Displays"]')?.click();
+        speak('Showing displays');
+        break;
+      case 'cat_wearables':
+        window.InclusionKit?.Workspace?.switchView('store');
+        document.querySelector('[data-store-cat="Wearables"]')?.click();
+        speak('Showing wearables');
+        break;
+      case 'preset_low_vision':
+        document.querySelector('[data-apply-preset="low-vision"]')?.click();
+        speak('Low vision mode enabled');
+        break;
+      case 'preset_dyslexia':
+        document.querySelector('[data-apply-preset="dyslexia"]')?.click();
+        speak('Dyslexia mode enabled');
+        break;
+      case 'preset_color_blind':
+        document.querySelector('[data-apply-preset="color-blind"]')?.click();
+        speak('Color blind mode enabled');
+        break;
+      case 'preset_motor':
+        document.querySelector('[data-apply-preset="motor"]')?.click();
+        speak('Motor mode enabled');
+        break;
       case 'toggle_high_contrast':
         State?.set('contrastMode', State.get('contrastMode') === 'high' ? 'normal' : 'high');
         speak('Toggled high contrast mode');
@@ -755,7 +812,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── 10. Specialized Typography (Topic 3) ────────────────────────────────
     {
-      patterns: ['dyslexic', 'dyslexia font', 'opendyslexic'],
+      patterns: ['dyslexic', 'dyslexia font', 'opendyslexic', 'easy reading font'],
       action() {
         State?.set('fontFamily', 'dyslexic');
         speak('OpenDyslexic weighted font enabled');

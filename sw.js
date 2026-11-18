@@ -6,7 +6,7 @@
  * cross-origin resources (CDNs, external fonts, images).
  */
 
-const CACHE_NAME = 'inclusionkit-v6';
+const CACHE_NAME = 'inclusionkit-v10';
 
 /**
  * Assets to pre-cache during the install phase.
